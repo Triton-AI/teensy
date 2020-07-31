@@ -70,27 +70,27 @@ void loop() {
     stringComplete = false;
   }
 
-  //receive command from Visual Studio
-  if (mySt.substring(0,8) == "vs_start"){
+  //receive serial command
+  if (mySt.substring(0,5) == "start"){
     digitalWrite(pin_fwd,1);      //run motor run forward
     digitalWrite(pin_bwd,0);
     motor_start = true;
   }
-  if (mySt.substring(0,7) == "vs_stop"){
+  if (mySt.substring(0,4) == "stop"){
     digitalWrite(pin_fwd,0);
     digitalWrite(pin_bwd,0);      //stop motor
     motor_start = false;
   }
-  if (mySt.substring(0,12) == "vs_set_speed"){
-    set_speed = mySt.substring(12,mySt.length()).toFloat();  //get string after set_speed
+  if (mySt.substring(0,12) == "set_speed"){
+    set_speed = mySt.substring(9,mySt.length()).toFloat();  //get string after set_speed
   }
-  if (mySt.substring(0,5) == "vs_kp"){
+  if (mySt.substring(0,6) == "set_kp"){
     kp = mySt.substring(5,mySt.length()).toFloat(); //get string after vs_kp
   }
-  if (mySt.substring(0,5) == "vs_ki"){
+  if (mySt.substring(0,6) == "set_ki"){
     ki = mySt.substring(5,mySt.length()).toFloat(); //get string after vs_ki
   }
-  if (mySt.substring(0,5) == "vs_kd"){
+  if (mySt.substring(0,6) == "set_kd"){
     kd = mySt.substring(5,mySt.length()).toFloat(); //get string after vs_kd
   }  
 }
@@ -102,7 +102,7 @@ void detect_a() {
 ISR(TIMER1_OVF_vect)        // interrupt service routine - tick every 0.1sec
 {
   TCNT1 = timer1_counter;   // set timer
-  pv_speed = 60.0*(encoder/200.0)/0.1;  //calculate motor speed, unit is rpm
+  pv_speed = 60.0*(encoder)/0.1;  //calculate motor speed, unit is rpm
   encoder=0;
   //print out speed
   if (Serial.available() <= 0) {
