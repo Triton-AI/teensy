@@ -5,7 +5,7 @@
  
  */
  
-String mySt = "";
+String inputSt = "";
 char myChar;
 boolean stringComplete = false;  // whether the string is complete
 boolean motor_start = false;
@@ -18,6 +18,7 @@ int m_direction = 0;
 int sv_speed = 100;     //this value is 0~255
 double pv_speed = 0;
 double set_speed = 0;
+double set_steer = 0; 
 double e_speed = 0; //error of speed = set_speed - pv_speed
 double e_speed_pre = 0;  //last error of speed
 double e_speed_sum = 0;  //sum error of speed
@@ -64,32 +65,38 @@ void setup() {
 void loop() {
   if (stringComplete) {
     // clear the string when COM receiving is completed
-    mySt = "";  //note: in code below, mySt will not become blank, mySt is blank until '\n' is received
+    inputSt = "";  //note: in code below, inputSt will not become blank, inputSt is blank until '\n' is received
     stringComplete = false;
   }
 
   //receive serial command
-  if (mySt.substring(0,5) == "start"){
+  if (inputSt.substring(0,5) == "start"){
 //    digitalWrite(pin_fwd,1);      //run motor run forward
 //    digitalWrite(pin_bwd,0);
     motor_start = true;
   }
-  if (mySt.substring(0,4) == "stop"){
+  if (inputSt.substring(0,4) == "stop"){
 //    digitalWrite(pin_fwd,0);
 //    digitalWrite(pin_bwd,0);      //stop motor
     motor_start = false;
   }
-  if (mySt.substring(0,12) == "set_speed"){
-    set_speed = mySt.substring(9,mySt.length()).toFloat();  //get string after set_speed
+  if (inputSt.substring(0,13) == "command_speed"){
+    set_speed = inputSt.substring(13,inputSt.length()).toFloat();  //get string after command_speed
   }
-  if (mySt.substring(0,6) == "set_kp"){
-    kp = mySt.substring(5,mySt.length()).toFloat(); //get string after vs_kp
+  if (inputSt.substring(0,16) == "command_steering"){
+    set_steer = inputSt.substring(16,inputSt.length()).toFloat();  //get string after command_steering
   }
-  if (mySt.substring(0,6) == "set_ki"){
-    ki = mySt.substring(5,mySt.length()).toFloat(); //get string after vs_ki
+  if (inputSt.substring(0,16) == "command_shutdown"){
+    //shutdown command
   }
-  if (mySt.substring(0,6) == "set_kd"){
-    kd = mySt.substring(5,mySt.length()).toFloat(); //get string after vs_kd
+  if (inputSt.substring(0,6) == "set_kp"){
+    kp = inputSt.substring(6,inputSt.length()).toFloat(); //get string after set_kp
+  }
+  if (inputSt.substring(0,6) == "set_ki"){
+    ki = inputSt.substring(6,inputSt.length()).toFloat(); //get string after set_ki
+  }
+  if (inputSt.substring(0,6) == "set_kd"){
+    kd = inputSt.substring(6,inputSt.length()).toFloat(); //get string after set_kd
   }  
 }
 
@@ -146,7 +153,7 @@ void serialEvent() {
     char inChar = (char)Serial.read();
     // add it to the inputString:
     if (inChar != '\n') {
-      mySt += inChar;
+      inputSt += inChar;
     }
     // if the incoming character is a newline, set a flag
     // so the main loop can do something about it:
