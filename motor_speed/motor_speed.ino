@@ -2,13 +2,9 @@
   Motor - PID speed control
   (1) Receive command from Visual Studio (via COM4): set_speed, kP, kI, kD
   (2) Control motor speed through PWM (PWM is base on PID calculation)
-  (3) Send pv_speed to Visual Studio -> show in graph
-  
- Created 31 Dec. 2016
- This example code is in the public domain.
-
- http://engineer2you.blogspot.com
+ 
  */
+ 
 String mySt = "";
 char myChar;
 boolean stringComplete = false;  // whether the string is complete
