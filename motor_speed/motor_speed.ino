@@ -1,6 +1,6 @@
 /*
   Motor - PID speed control
-  (1) Receive command from Visual Studio (via COM4): set_speed, kP, kI, kD
+  (1) Receive command from serial (via COM4): set_speed, kP, kI, kD
   (2) Control motor speed through PWM (PWM is base on PID calculation)
  
  */
@@ -12,9 +12,7 @@ boolean motor_start = false;
 const byte pin_a = 2;   //for encoder pulse A
 const byte pin_b = 3;   //for encoder pulse B
 const byte pin_c = 4;   //for encoder pulse B
-//const byte pin_fwd = 4; //for H-bridge: run motor forward
-//const byte pin_bwd = 5; //for H-bridge: run motor backward
-//const byte pin_pwm = 6; //for H-bridge: motor speed
+
 int encoder = 0;
 int m_direction = 0;
 int sv_speed = 100;     //this value is 0~255
@@ -59,8 +57,8 @@ void setup() {
   }
 
   analogWrite(pin_pwm,0);   //stop motor
-  digitalWrite(pin_fwd,0);  //stop motor
-  digitalWrite(pin_bwd,0);  //stop motor
+//  digitalWrite(pin_fwd,0);  //stop motor
+//  digitalWrite(pin_bwd,0);  //stop motor
 }
 
 void loop() {
@@ -72,13 +70,13 @@ void loop() {
 
   //receive serial command
   if (mySt.substring(0,5) == "start"){
-    digitalWrite(pin_fwd,1);      //run motor run forward
-    digitalWrite(pin_bwd,0);
+//    digitalWrite(pin_fwd,1);      //run motor run forward
+//    digitalWrite(pin_bwd,0);
     motor_start = true;
   }
   if (mySt.substring(0,4) == "stop"){
-    digitalWrite(pin_fwd,0);
-    digitalWrite(pin_bwd,0);      //stop motor
+//    digitalWrite(pin_fwd,0);
+//    digitalWrite(pin_bwd,0);      //stop motor
     motor_start = false;
   }
   if (mySt.substring(0,12) == "set_speed"){
@@ -107,7 +105,7 @@ ISR(TIMER1_OVF_vect)        // interrupt service routine - tick every 0.1sec
   //print out speed
   if (Serial.available() <= 0) {
     Serial.print("speed");
-    Serial.println(pv_speed);         //Print speed (rpm) value to Visual Studio
+    Serial.println(pv_speed);         //Print speed (rpm) value to 
     }
 
 
