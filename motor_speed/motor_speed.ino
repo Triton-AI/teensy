@@ -80,6 +80,17 @@ void loop() {
 //    digitalWrite(pin_bwd,0);      //stop motor
     motor_start = false;
   }
+  if (inputSt.substring(0,10) == "poll_speed"){
+    printSpeed();
+  }
+  if (inputSt.substring(0,13) == "poll_throttle"){
+    printThrottle();
+  }
+  if (inputSt.substring(0,13) == "poll_steering"){
+    printSteering();
+  }
+
+  
   if (inputSt.substring(0,13) == "command_speed"){
     set_speed = inputSt.substring(13,inputSt.length()).toFloat();  //get string after command_speed
   }
