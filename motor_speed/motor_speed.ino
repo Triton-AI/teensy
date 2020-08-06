@@ -81,13 +81,13 @@ void loop() {
     motor_start = false;
   }
   if (inputSt.substring(0,10) == "poll_speed"){
-    printSpeed();
+    Serial.println(pv_speed);
   }
   if (inputSt.substring(0,13) == "poll_throttle"){
-    printThrottle();
+    Serial.println(throttlePWM);
   }
   if (inputSt.substring(0,13) == "poll_steering"){
-    printSteering();
+    Serial.println(steeringPWM);
   }
 
   
@@ -110,7 +110,7 @@ void loop() {
     kd = inputSt.substring(6,inputSt.length()).toFloat(); //get string after set_kd
   }  
 }
-
+    
 void detect_a() {
   encoder+=1; //increasing encoder at new pulse
   m_direction = digitalRead(pin_b); //read direction of motor
@@ -118,13 +118,13 @@ void detect_a() {
 ISR(TIMER1_OVF_vect)        // interrupt service routine - tick every 0.1sec
 {
   TCNT1 = timer1_counter;   // set timer
-  pv_speed = 60.0*(encoder)/0.1;  //calculate motor speed, unit is rpm
+  pv_speed = 60.0*(encoder)/0.1;  //calculate motor speed, unit is ticks/s
   encoder=0;
   //print out speed
-  if (Serial.available() <= 0) {
-    Serial.print("speed");
-    Serial.println(pv_speed);         //Print speed (rpm) value to 
-    }
+//  if (Serial.available() <= 0) {
+//    Serial.print("speed");
+//    Serial.println(pv_speed);         //Print speed (ticks/s) value
+//    }
 
 
   //PID program
