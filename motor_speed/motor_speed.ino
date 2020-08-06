@@ -4,6 +4,17 @@
   (2) Control motor speed through PWM (PWM is base on PID calculation)
  
  */
+
+////////////////////////////////////////
+                                      //
+#include <Servo.h>                                      
+const int servoPin = 5;
+Servo myServo;
+
+const int escPin = 6;
+Servo myESC;
+                                      //
+////////////////////////////////////////
  
 String inputSt = "";
 char myChar;
@@ -34,6 +45,13 @@ int i=0;
 
 
 void setup() {
+
+////////////////////////////////////////
+                                      //
+myServo.attach(servoPin);
+myESC.attach(escPin);
+                                      //
+////////////////////////////////////////
   pinMode(pin_a,INPUT_PULLUP);
   pinMode(pin_b,INPUT_PULLUP);
   pinMode(pin_c,INPUT_PULLUP);
@@ -45,6 +63,7 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(pin_c), detect_c, RISING);
   // start serial port at 9600 bps:
   Serial.begin(9600);
+  Serial.println("<Arduino is ready>");     // For testing, emit for production
   //--------------------------timer setup
   noInterrupts();           // disable all interrupts
   TCCR1A = 0;
@@ -86,7 +105,7 @@ void loop() {
     stringComplete = false;
   }
 
-  //receive serial command
+  //      **********     receive serial command     **********   
   if (inputSt.substring(0,5) == "start"){
 //    digitalWrite(pin_fwd,1);      //run motor run forward
 //    digitalWrite(pin_bwd,0);
@@ -101,12 +120,11 @@ void loop() {
     Serial.println(avg_speed);
   }
   if (inputSt.substring(0,13) == "poll_throttle"){
-    Serial.println(throttlePWM);
+    Serial.println(throttle);
   }
   if (inputSt.substring(0,13) == "poll_steering"){
-    Serial.println(steeringPWM);
+    Serial.println(steering);
   }
-
   
   if (inputSt.substring(0,13) == "command_speed"){
     set_speed = inputSt.substring(13,inputSt.length()).toFloat();  //get string after command_speed
@@ -125,7 +143,10 @@ void loop() {
   }
   if (inputSt.substring(0,6) == "set_kd"){
     kd = inputSt.substring(6,inputSt.length()).toFloat(); //get string after set_kd
-  }  
+  }
+
+writeToESC(throttle);
+writeToServo(steering);
 }
     
 void detect_a() {
@@ -135,12 +156,10 @@ void detect_a() {
 
 void detect_b() {
   encoderB+=1; //increasing encoder at new pulse
-  m_direction = digitalRead(pin_c); //read direction of motor
 }
 
 void detect_c() {
   encoderC+=1; //increasing encoder at new pulse
-  m_direction = digitalRead(pin_a); //read direction of motor
 }
 ISR(TIMER1_OVF_vect)        // interrupt service routine - tick every 0.1sec
 {
@@ -206,3 +225,25 @@ void serialEvent() {
     }
   }
 }
+
+
+ void writeNewData(){
+   if (newData == true) {
+  // Serial.print("This just in ... ");
+   int intVal = atoi(receivedChars);
+   Serial.println(intVal);
+   myservo.write(intVal);
+    }
+    newData = false;
+  }
+  
+ void writeToESC(){
+   if (newData == true) {
+  // Serial.print("This just in ... ");
+   int intVal = atoi(receivedChars);
+   Serial.println(intVal);
+   myESC.write(intVal);
+    }
+    newData = false;
+  }
+  
