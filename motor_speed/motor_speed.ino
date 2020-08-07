@@ -24,6 +24,8 @@ const byte pin_a = 2;   //for encoder pulse A
 const byte pin_b = 3;   //for encoder pulse B
 const byte pin_c = 4;   //for encoder pulse B
 const int interruptPeriod = 0.01;  // Period of interrupt service routine, unit is in seconds
+unsigned long currentTime, previousTime;
+double elapsedTime;
 
 int encoderA = 0;
 int encoderB = 0;
@@ -117,13 +119,20 @@ void loop() {
     motor_start = false;
   }
   if (inputSt.substring(0,10) == "poll_speed"){
-    Serial.println(avg_speed);
+    // JTN: “poll_speed\n”
+    // Teensy: “speed_12345\n” (int value, ticks/s)
+    Serial.println("speed_" + string(avg_speed) + "\n" );
   }
   if (inputSt.substring(0,13) == "poll_throttle"){
-    Serial.println(throttle);
+    // JTN: “poll_throttle\n”
+    // Teensy: “throttle_256\n” (PWM value)
+    
+    Serial.println("throttle_" + string(throttlePWM) + "\n" );
   }
   if (inputSt.substring(0,13) == "poll_steering"){
-    Serial.println(steering);
+    // JTN: “poll_steering\n”
+    // Teensy: “steering_563\n” (PWM value)
+    Serial.println("steering_" + string(steeringPWM) + "\n" );
   }
   
   if (inputSt.substring(0,13) == "command_speed"){
@@ -163,10 +172,12 @@ void detect_c() {
 }
 ISR(TIMER1_OVF_vect)        // interrupt service routine - tick every 0.1sec
 {
+  currentTime = micros();                //get current time
+  elapsedTime = (double)(currentTime - previousTime);        //compute time elapsed from previous computation
   TCNT1 = timer1_counter;   // set timer
-  a_speed = 60.0*(encoderA)/interruptPeriod;  //calculate motor speed, unit is ticks/s
-  b_speed = 60.0*(encoderA)/interruptPeriod;  //calculate motor speed, unit is ticks/s
-  c_speed = 60.0*(encoderA)/interruptPeriod;  //calculate motor speed, unit is ticks/s
+  a_speed = (encoderA)/elapsedTime;  //calculate motor speed, unit is ticks/micros
+  b_speed = (encoderB)/elapsedTime;  //calculate motor speed, unit is ticks/micros
+  c_speed = (encoderC)/elapsedTime;  //calculate motor speed, unit is ticks/micros
   
   avg_speed = (a_speed + b_speed + c_speed)/3;  // Average of 3 encoder phase speeds
   
@@ -183,9 +194,14 @@ ISR(TIMER1_OVF_vect)        // interrupt service routine - tick every 0.1sec
   //PID program
   if (motor_start){
     e_speed = set_speed - avg_speed;
-    pwm_pulse = e_speed*kp + e_speed_sum*ki + (e_speed - e_speed_pre)*kd;
+
+    error = set_speed - avg_speed;                          // determine error
+    cumError += error * elapsedTime;                // compute integral
+    rateError = (error - lastError)/elapsedTime;   // compute derivative
+    
+    pwm_pulse = e_speed*kp + e_speed_sum*ki + (e_speed - e_speed_pre)/interruptPeriod*kd;
     e_speed_pre = e_speed;  //save last (previous) error
-    e_speed_sum += e_speed; //sum of error
+    e_speed_sum += e_speed * interruptPeriod; // cumulative error
     if (e_speed_sum >4000) e_speed_sum = 4000;
     if (e_speed_sum <-4000) e_speed_sum = -4000;
   }
@@ -198,17 +214,19 @@ ISR(TIMER1_OVF_vect)        // interrupt service routine - tick every 0.1sec
   
   //update new speed
   if (pwm_pulse <255 & pwm_pulse >0){
-    analogWrite(pin_pwm,pwm_pulse);  //set motor speed  
+    writeToESC(pwm_pulse);  //set motor speed  
   }
   else{
-    if (pwm_pulse>255){
+    if (pwm_pulse>180){
       analogWrite(pin_pwm,255);
     }
     else{
       analogWrite(pin_pwm,0);
     }
   }
-  
+
+  lastError = error;                                //remember current error
+  previousTime = currentTime;                        //remember current time
 }
 void serialEvent() {
   while (Serial.available()) {
@@ -226,24 +244,19 @@ void serialEvent() {
   }
 }
 
-
- void writeNewData(){
-   if (newData == true) {
+// Writes to Steering Servo
+ void writeToServo(int intVal){
   // Serial.print("This just in ... ");
-   int intVal = atoi(receivedChars);
+   //int intVal = atoi(receivedChars);
    Serial.println(intVal);
    myservo.write(intVal);
-    }
-    newData = false;
   }
-  
- void writeToESC(){
-   if (newData == true) {
+
+// Writes to ESC
+ void writeToESC(int intVal){
   // Serial.print("This just in ... ");
-   int intVal = atoi(receivedChars);
+   //int intVal = atoi(receivedChars);
    Serial.println(intVal);
    myESC.write(intVal);
-    }
-    newData = false;
   }
   
