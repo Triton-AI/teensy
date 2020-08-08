@@ -5,6 +5,12 @@
  
  */
 
+/////// RC Reciever Channels ///////////
+#include "PWM.hpp"
+PWM steeringRC(7);
+PWM throttleRC(8);
+PWM modeRC(9);
+
 ////////////////////////////////////////
                                       //
 #include <Servo.h>                                      
@@ -15,18 +21,20 @@ const int escPin = 6;
 Servo myESC;
                                       //
 ////////////////////////////////////////
- 
+
+
+
+/////// Serial Interface ///////////
 String inputSt = "";
 char myChar;
 boolean stringComplete = false;  // whether the string is complete
 boolean motor_start = false;
+
+
+/////// Speed Controller ///////////
 const byte pin_a = 2;   //for encoder pulse A
 const byte pin_b = 3;   //for encoder pulse B
 const byte pin_c = 4;   //for encoder pulse B
-const int interruptPeriod = 0.01;  // Period of interrupt service routine, unit is in seconds
-unsigned long currentTime, previousTime;
-double elapsedTime;
-
 int encoderA = 0;
 int encoderB = 0;
 int encoderC = 0;
@@ -42,16 +50,25 @@ double pwm_pulse = 0;     //this value is 0~255
 double kp = 0;
 double ki = 0;
 double kd = 0;
+const int interruptPeriod = 0.01;  // Period of interrupt service routine, unit is in seconds
 int timer1_counter; //for timer
 int i=0;
+unsigned long currentTime, previousTime;
+double elapsedTime;
 
 
 void setup() {
 
+throttleRC.begin(true); // PWM on pin 2 reading PWM HIGH duration
+steeringRC.begin(true);
+modeRC.begin(true);
+
 ////////////////////////////////////////
                                       //
 myServo.attach(servoPin);
+myServo.write(0);          // may not be necessary
 myESC.attach(escPin);
+myESC.write(0);            // may not be necessary
                                       //
 ////////////////////////////////////////
   pinMode(pin_a,INPUT_PULLUP);
@@ -101,6 +118,12 @@ myESC.attach(escPin);
 }
 
 void loop() {
+
+// Getting latest RC values
+steering.getValue();
+throttle.getValue();
+mode.getValue(); 
+ 
   if (stringComplete) {
     // clear the string when COM receiving is completed
     inputSt = "";  //note: in code below, inputSt will not become blank, inputSt is blank until '\n' is received
@@ -154,8 +177,8 @@ void loop() {
     kd = inputSt.substring(6,inputSt.length()).toFloat(); //get string after set_kd
   }
 
-writeToESC(throttle);
-writeToServo(steering);
+writeToESC(throttlePWM);
+writeToServo(steeringPWM);
 }
     
 void detect_a() {
