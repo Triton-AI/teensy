@@ -12,7 +12,7 @@ PWM throttleRC(8);
 PWM modeRC(9);
 
 ////////////////////////////////////////
-                                      //
+//        Includes                    //
 #include <Servo.h>                                      
 const int servoPin = 5;
 Servo myServo;
@@ -34,12 +34,12 @@ boolean motor_start = false;
 /////// Speed Controller ///////////
 const byte pin_a = 2;   //for encoder pulse A
 const byte pin_b = 3;   //for encoder pulse B
-const byte pin_c = 4;   //for encoder pulse B
+const byte pin_c = 4;   //for encoder pulse C
 int encoderA = 0;
 int encoderB = 0;
 int encoderC = 0;
+double a_speed, b_speed, c_speed;
 int m_direction = 0;
-int sv_speed = 100;     //this value is 0~255
 double avg_speed = 0;
 double set_speed = 0;
 double set_steer = 0; 
@@ -56,7 +56,7 @@ int i=0;
 unsigned long currentTime, previousTime;
 double elapsedTime;
 
-
+////////////////////////////// Begin Setup ////////////////////////////////
 void setup() {
 
 throttleRC.begin(true); // PWM on pin 2 reading PWM HIGH duration
@@ -82,7 +82,7 @@ myESC.write(0);            // may not be necessary
   attachInterrupt(digitalPinToInterrupt(pin_c), detect_c, RISING);
   // start serial port at 9600 bps:
   Serial.begin(9600);
-  Serial.println("<Arduino is ready>");     // For testing, emit for production
+  Serial.println("<Arduino is ready>");     // For testing, omit for production
   //--------------------------timer setup
   noInterrupts();           // disable all interrupts
   TCCR1A = 0;
@@ -115,7 +115,7 @@ myESC.write(0);            // may not be necessary
   analogWrite(pin_pwm,0);   //stop motor
 //  digitalWrite(pin_fwd,0);  //stop motor
 //  digitalWrite(pin_bwd,0);  //stop motor
-}
+} ////////////////////////////// End Setup ////////////////////////////////
 
 void loop() {
 
@@ -157,7 +157,7 @@ mode.getValue();
     // Teensy: “steering_563\n” (PWM value)
     Serial.println("steering_" + string(steeringPWM) + "\n" );
   }
-  
+    
   if (inputSt.substring(0,13) == "command_speed"){
     set_speed = inputSt.substring(13,inputSt.length()).toFloat();  //get string after command_speed
   }
@@ -178,7 +178,7 @@ mode.getValue();
   }
 
 writeToESC(throttlePWM);
-writeToServo(steeringPWM);
+writeToServo(steeringPWM);     
 }
     
 void detect_a() {
@@ -225,8 +225,8 @@ ISR(TIMER1_OVF_vect)        // interrupt service routine - tick every 0.1sec
     pwm_pulse = e_speed*kp + e_speed_sum*ki + (e_speed - e_speed_pre)/interruptPeriod*kd;
     e_speed_pre = e_speed;  //save last (previous) error
     e_speed_sum += e_speed * interruptPeriod; // cumulative error
-    if (e_speed_sum >4000) e_speed_sum = 4000;
-    if (e_speed_sum <-4000) e_speed_sum = -4000;
+    if (e_speed_sum >maxErrRange) e_speed_sum = maxErrRange;
+    if (e_speed_sum <minErrRange) e_speed_sum = minErrRange;
   }
   else{
     e_speed = 0;
