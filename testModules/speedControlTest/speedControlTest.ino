@@ -1,3 +1,10 @@
+
+#include "PWM.hpp"
+const int steeringPin = 7;
+const int throttlePin = 8;
+PWM steeringRC(steeringPin);
+PWM throttleRC(throttlePin);
+
 const int pinA = 3;
 const int pinB = 4;
 int valuePhaseB = 0;
@@ -5,8 +12,6 @@ double tic = micros();
 double toc = 0;
 double omegaPeriod;
 float omega = 0;
-
-
 
 ///
 double avg_speed = 0;
@@ -18,9 +23,11 @@ double lastError = 0;  //last error of speed
 double cumError = 0;   //sum error of speed
 double rateError = 0;  //rate of change of error
 
+///////////////////////
 float kp = 0;
 float ki = 0;
 float kd = 0;
+///////////////////////
 
 double effort = 0;
 double maxEffort = 5000;
@@ -30,7 +37,7 @@ double currentTime, previousTime;
 double elapsedTime;
 
 ///
-double throttlePWM = 0;
+int throttlePWM = 0;
 bool reverse = false;
 
 
@@ -89,8 +96,13 @@ void loop() {
     effort = 0;
   }
  
-
-
+  if (effort > 0) {
+    throttlePWM = map(effort,0,maxEffort,90,180);
+  }
+  else{
+    throttlePWM = map(effort,minEffort,0,0,90);
+  }
+  
   writeToESC(throttlePWM);
 
   lastError = error;                                //remember current error

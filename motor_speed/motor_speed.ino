@@ -7,9 +7,12 @@
 
 /////// RC Reciever Channels ///////////
 #include "PWM.hpp"
-PWM steeringRC(7);
-PWM throttleRC(8);
-PWM modeRC(9);
+const int steeringPin = 7;
+const int throttlePin = 8;
+const int modePin = 9;
+PWM steeringRC(steeringPin);
+PWM throttleRC(throttlePin);
+PWM modeRC(modePin);
 
 ////////////////////////////////////////
 //        Includes                    //
