@@ -57,7 +57,7 @@ if (Serial.available() <= 0) {
   Serial.print("\t");
   Serial.print(a_speed);
   Serial.print("\t");
- Serial.print("B speed: ");
+  Serial.print("B speed: ");
   Serial.print("\t");
   Serial.print(b_speed);
   Serial.print("\t");
