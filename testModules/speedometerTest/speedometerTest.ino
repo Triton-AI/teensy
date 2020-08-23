@@ -1,9 +1,25 @@
+/*    /// Test Speedometer ///
+
+Use this code to test your brushless motor's hall effect sensors
+
+With your RC receiver connected directly to your brushless sensored motor & 
+steering servo, connect the 6pin JST connector from your motor sensor to one 
+terminal of the ECE robocar board, and the other to your ESC to intercept the
+pulses.  This script shall allow you to read the speed of the motor in ticks/s
+via the serial monitor
+
+*** Make sure your car is resting securely on a stand, wheels free to spin ****
+
+ 
+*///
+///
+
+
 const int pinA = 2;
 const int pinB = 3;
 const int pinC = 4;
 
 int valuePhaseB = 0;
-int pulsePerMeter = 100;
 volatile double pulses = 0;
 double timeO = 0;
 double timeF = 0;
@@ -25,7 +41,7 @@ float omegaAvg = 0;
 float encoderSpeed = 0;
 
 bool reverse = false;
-int arrayIndex = 0;
+
 
 void setup() {
   Serial.begin(9600); 
@@ -33,19 +49,16 @@ void setup() {
   pinMode(pinB, INPUT_PULLUP);
   pinMode(pinC, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(pinA), detectAPulses, RISING);    // enable external interrupt with a rising edge of PhaseA
-  attachInterrupt(digitalPinToInterrupt(pinB), detectBPulses, RISING);    // enable external interrupt with a rising edge of PhaseA
-  attachInterrupt(digitalPinToInterrupt(pinC), detectCPulses, RISING);    // enable external interrupt with a rising edge of PhaseA
+  attachInterrupt(digitalPinToInterrupt(pinB), detectBPulses, RISING);    // enable external interrupt with a rising edge of PhaseB
+  attachInterrupt(digitalPinToInterrupt(pinC), detectCPulses, RISING);    // enable external interrupt with a rising edge of PhaseC
   timeO = micros();   // Initialize initial time
 }
 
-void loop() {
-    //////////////////////////////////////////////////////////////
-    // Counting pulses
-    timeF = micros();     // Geting the final time to get the speed 
-    elapsedTime = timeF - timeO;
-    
+void loop() {    
     //////////////////////////////////////////////////////////////
     // Measuring period
+    timeF = micros();     // Geting the final time to get the speed 
+    elapsedTime = timeF - timeO;
     if (timeF - tocA > 1e5) {
       omegaA = 0;
     }
