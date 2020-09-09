@@ -3,7 +3,7 @@
 Use this code to test your RC controller path.
 
 With your RC receiver connected to PWM inputs on your 
-teensy robocar doard (pins 7,8, and 9) you should be able 
+teensy robocar board (pins 7,8, and 9) you should be able 
 to demonstrate throttle, steering, and changing modes (Ch3)
 
 *** Make sure your car is resting securely on a stand, wheels free to spin ****
@@ -56,7 +56,7 @@ void setup() {
   
 
 ////////////////////////////////////////
-                                      //
+//      RC Setup                      //
 throttleRC.begin(true); // PWM on pin 2 reading PWM HIGH duration
 steeringRC.begin(true);
 modeRC.begin(true);

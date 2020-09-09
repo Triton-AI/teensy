@@ -1,6 +1,6 @@
-/*    /// Speed Control Test ///
+/*    /// Serial Speed Control Test ///
 
-Use this code to test your speed controller.
+Use this code to test your speed controller while communicating over serial.
 
 With your RC receiver connected to PWM inputs on your 
 teensy robocar board (pins 7,8, and 9) you should be able 
