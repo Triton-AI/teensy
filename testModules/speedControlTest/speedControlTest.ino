@@ -95,7 +95,7 @@ bool inReverse = false;
                                             ///
 
 double set_speed = 0;
-double max_Speed = 900; // ticks/s
+double max_Speed = 1000; // ticks/s
 double min_Speed = max_Speed * (-1); // ticks/s
 
 const int errorArraySize = 100;
@@ -106,9 +106,9 @@ double cumError = 0;   //sum error of speed
 double rateError = 0;  //rate of change of error
 
 ///////////////////////
-float kp = 1;
-float ki = 0.5;
-float kd = 0.005;
+float kp = .5;
+float ki = 10;
+float kd = 0.01;
 ///////////////////////
 
 double effortPID = 0;
@@ -148,6 +148,10 @@ myESC.attach(escPin);
 myESC.write(90);            // may not be necessary
                                       //
 ////////////////////////////////////////
+
+// For Serial Plotter
+
+Serial.println("Speed,Error,Throttle");
 }
 
 void loop() {
@@ -197,9 +201,10 @@ void loop() {
 //    Serial.print("Speed(omegaC): "); 
 //    Serial.print(omegaC);     // Printing speed value
 //    Serial.print(" ticks/s\t");
-    Serial.print("\nSpeed(omegaAvg): "); 
+    //Serial.print("\nSpeed(omegaAvg): "); 
+    Serial.print("\n");
     Serial.print(omegaAvg);     // Printing speed value
-    Serial.print(" ticks/s\t");
+    //Serial.print(" ticks/s\t");
 
     avg_speed = omegaAvg;
     
@@ -272,8 +277,8 @@ writeToServo(steeringPWM);
     
     set_speed = map(throttlePosition,minRcRange,maxRcRange,min_Speed,max_Speed);
     effortPID = pidSpeedControl(set_speed,avg_speed);
-    Serial.print("\tIn Speed Control Mode - set speed: "); 
-    Serial.print(set_speed);
+    //Serial.print("\tIn Speed Control Mode - set speed: "); 
+    //Serial.println(set_speed);
     throttlePWM = map(effortPID,minEffort,maxEffort,wideOpenReverse,wideOpenThrottle);
   }
   else {
@@ -372,9 +377,11 @@ int pidSpeedControl(int set_Speed, int real_Speed) {
     effort = 0;
   }
   
-    Serial.print("\tError: ");
+    //Serial.print("\tError: ");
+    Serial.print("\t");
     Serial.print(error);
-    Serial.print("\tControl Effort: ");
+    //Serial.print("\tControl Effort: ");
+    Serial.print("\t");
     Serial.print(effort);
   
 
