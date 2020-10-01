@@ -63,6 +63,7 @@ double ticB = micros();
 double tocB = 0;
 double ticC = micros();
 double tocC = 0;
+
 double omegaAPeriod;
 double omegaBPeriod;
 double omegaCPeriod;
@@ -90,11 +91,11 @@ double lastError = 0;  //last error of speed
 double cumError = 0;   //sum error of speed
 double rateError = 0;  //rate of change of error
 
-///////////////////////
+//////////// PID Gains ///////////
 float kp = .5;
 float ki = 10;
 float kd = 0.01;
-///////////////////////
+//////////////////////////////////
 
 double effortPID = 0;
 double maxEffort = max_Speed;     // previously defined in ticks/s
@@ -103,6 +104,15 @@ double minEffort = min_Speed;     // previously defined in ticks/s
 double currentTime, previousTime;
 
 byte i = 0;                       // Smoothing index
+
+/////////////// Serial API ///////////
+const byte numChars = 32;
+char receivedChars[numChars]; // an array to store the received data
+char receivedNums[numChars];
+boolean newData = false;
+//////////////////////////////////////
+
+
 //double elapsedTime;
 
 ///

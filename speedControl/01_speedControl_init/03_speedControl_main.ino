@@ -1,56 +1,7 @@
 void loop() {
 ///////////////// Calculating Vehicle Speed ////////////////////
 
- //////////////////////////////////////////////////////////////
-    // Measuring period
-    timeO = timeF;
-    timeF = micros();     // Geting the final time to get the speed 
-    elapsedTime = timeF - timeO;
-    if (timeF - tocA > 1e5) {
-      omegaA = 0;
-    }
-    else{
-      omegaA = (1e6/omegaAPeriod);
-    }
-    
-    if (timeF - tocB > 1e5) {
-      omegaB = 0;
-    }
-    else{
-      omegaB = (1e6/omegaBPeriod);
-    }
-    
-    if (timeF - tocC > 1e5) {
-      omegaC = 0;
-    }
-    else{
-      omegaC = (1e6/omegaCPeriod);
-    }
-    omegaAvg = (omegaA + omegaB + omegaC)/3;
-
-    if (inReverse == true) {
-        omegaA *= (-1);
-        omegaB *= (-1);
-        omegaC *= (-1);
-        omegaAvg *= (-1);
-    }
-
-////// Printing Speed to Serial Monitor
-//    Serial.print("Speed(omegaA): "); 
-//    Serial.print(omegaA);     // Printing speed value
-//    Serial.print(" ticks/s\t");
-//    Serial.print("Speed(omegaB): "); 
-//    Serial.print(omegaB);     // Printing speed value
-//    Serial.print(" ticks/s\t");
-//    Serial.print("Speed(omegaC): "); 
-//    Serial.print(omegaC);     // Printing speed value
-//    Serial.print(" ticks/s\t");
-    //Serial.print("\nSpeed(omegaAvg): "); 
-    Serial.print("\n");
-    Serial.print(omegaAvg);     // Printing speed value
-    //Serial.print(" ticks/s\t");
-
-    avg_speed = omegaAvg;
+ calcSpeed();
     
 ///////////////// Getting Latest RC Values /////////////////////
    
@@ -100,16 +51,7 @@ void loop() {
     throttlePosition = neutralRC;
   }
 
-/*
-    Serial.print("\nSteering Angle: ");
-    Serial.print(steeringAngle);
-    Serial.print("\t");
-    Serial.print("Throttle Position: ");
-    Serial.print(throttlePosition);
-    Serial.print("\t");
-    Serial.print("Drive Mode: ");
-    Serial.print(driveMode); 
-*/
+
 steeringPWM = map(steeringAngle,minRcRange,maxRcRange,fullRight,fullLeft);
 writeToServo(steeringPWM);
 ///////////////// Determining Drive Mode ///////////////////////

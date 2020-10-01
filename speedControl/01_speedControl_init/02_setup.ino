@@ -24,7 +24,4 @@ myESC.write(90);            // may not be necessary
                                       //
 ////////////////////////////////////////
 
-// For Serial Plotter
-
-Serial.println("Speed,Error,Throttle");
 }
