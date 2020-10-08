@@ -24,4 +24,6 @@ myESC.write(90);            // may not be necessary
                                       //
 ////////////////////////////////////////
 
+wdt_enable(WDTO_250MS); // Enable low level watchdog timer
+
 }

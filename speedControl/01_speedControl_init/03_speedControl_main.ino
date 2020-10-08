@@ -1,59 +1,23 @@
+
 void loop() {
+
+ // the program is alive...for now. 
+  wdt_reset();
+
+  
 ///////////////// Calculating Vehicle Speed ////////////////////
 
  calcSpeed();
     
 ///////////////// Getting Latest RC Values /////////////////////
-   
-  // shift array values
-  for(i=steeringArraySize-1;i>0;i--)
-    steeringArray[i] = steeringArray[i-1];
-    
-  steeringArray[0] = steeringRC.getValue();
 
-  steeringSum = 0;
+ getSteering();
+ getThrottle();
+ getDriveMode();
 
-  for(i=0;i<steeringArraySize;i++){
-    steeringSum += steeringArray[i];
-  }
-
-  steeringAngle = steeringSum/steeringArraySize;
- 
-  
-   // shift array values
-  for(i=throttleArraySize-1;i>0;i--)
-    throttleArray[i] = throttleArray[i-1];
-  throttleArray[0] = throttleRC.getValue();
-
-  throttleSum = 0;
-
-  for(i=0;i<throttleArraySize;i++){
-    throttleSum += throttleArray[i];
-  }
-  throttlePosition = throttleSum/throttleArraySize;
-  
-  driveMode = modeRC.getValue(); 
-
-  // Checking to see if RC values within range
-  if (steeringAngle >> maxRcRange) {
-    steeringAngle = neutralRC;
-    throttlePosition = neutralRC;
-    driveMode = neutralRC;
-  }
-  else if (steeringAngle << minRcRange) {
-    steeringAngle = neutralRC;
-    throttlePosition = neutralRC;
-    driveMode = neutralRC;
-  }
-
-  // Trigger Deadzone
-  if (abs(throttlePosition - neutralRC) < 10){
-    throttlePosition = neutralRC;
-  }
-
-
+////////////////////// Map Steering ////////////////////////////
 steeringPWM = map(steeringAngle,minRcRange,maxRcRange,fullRight,fullLeft);
-writeToServo(steeringPWM);
+
 ///////////////// Determining Drive Mode ///////////////////////
 
   if (driveMode > 1700) {
@@ -70,5 +34,8 @@ writeToServo(steeringPWM);
   else {
     throttlePWM = neutral;
   }
+
+///////////////////////Write to Motors ////////////////////////////
+  writeToServo(steeringPWM);
   writeToESC(throttlePWM);
 }                                                             

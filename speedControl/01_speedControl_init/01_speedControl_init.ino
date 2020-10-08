@@ -1,5 +1,9 @@
 /////// RC Reciever Initializations ///////////
 #include "PWM.hpp"                          ///
+#include <avr/wdt.h>
+//#include <KalmanFilter.h>
+
+//KalmanFilter kalmanfilter;
 
 int maxRcRange = 2000;
 int minRcRange = 1000;
@@ -76,6 +80,13 @@ float encoderSpeed = 0;
 double avg_speed = 0;
 bool inReverse = false;
 
+
+////////////////Kalman_Filter//////////////////
+float Q_angle = 0.001, Q_gyro = 0.005; 
+float R_angle = 0.5 , C_0 = 1;
+float timeChange = 5; //Filter sampling time interval (unit:milliseconds)
+float dt = timeChange * 0.001; //Note:The value of dt is the filter sampling time
+////////////////Kalman_Filter//////////////////
 
 ///// Speed Controller Initializations ////////
                                             ///
