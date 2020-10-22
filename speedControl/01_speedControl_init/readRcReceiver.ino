@@ -1,7 +1,13 @@
+
+///////////////// Getting Latest Steering Value /////////////////////
+
 void getSteering() {
   steeringAngle = steeringRC.getValue();   
+  steeringPWM = map(steeringAngle,minRcRange,maxRcRange,fullRight,fullLeft);
 } // getSteering()
 
+
+///////////////// Getting Latest Throttle Value /////////////////////
 void getThrottle() {
 
   throttlePosition = throttleRC.getValue();
@@ -13,20 +19,25 @@ void getThrottle() {
   
 } // getThrottle()
 
+
+///////////////// Getting Latest Drive Mode /////////////////////
 void getDriveMode() {
 
  driveMode = modeRC.getValue(); 
-
-  // Checking to see if RC values within range
-  if (steeringAngle >> maxRcRange) {
-    steeringAngle = neutralRC;
-    throttlePosition = neutralRC;
-    driveMode = neutralRC;
+  
+  if (driveMode > 1700) {
+    throttlePWM = map(throttlePosition,minRcRange,maxRcRange,wideOpenReverse,wideOpenThrottle);
   }
-  else if (steeringAngle << minRcRange) {
-    steeringAngle = neutralRC;
-    throttlePosition = neutralRC;
-    driveMode = neutralRC;
+  else if (driveMode > 1200) {
+    
+    set_speed = map(throttlePosition,minRcRange,maxRcRange,min_Speed,max_Speed);
+    effortPID = pidSpeedControl(set_speed,avg_speed);
+    //Serial.print("\tIn Speed Control Mode - set speed: "); 
+    //Serial.println(set_speed);
+    throttlePWM = map(effortPID,minEffort,maxEffort,wideOpenReverse,wideOpenThrottle);
+  }
+  else {
+    throttlePWM = neutral;
   }
   
 }

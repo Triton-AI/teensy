@@ -1,6 +1,7 @@
 /////// RC Reciever Initializations ///////////
 #include "PWM.hpp"                          ///
 #include <avr/wdt.h>
+#include <PID_v1.h>
 //#include <KalmanFilter.h>
 
 //KalmanFilter kalmanfilter;
@@ -33,8 +34,6 @@ int wideOpenReverse = 0;
 int steeringPWM = 90; // Initializing neutral steering
 int fullRight = 0;
 int fullLeft = 180;
-
-
 
                                             ///
 ////// End RC Reciever Initializations ////////
@@ -90,6 +89,17 @@ float dt = timeChange * 0.001; //Note:The value of dt is the filter sampling tim
 
 ///// Speed Controller Initializations ////////
                                             ///
+//////////// PID Gains ///////////
+float kp = .5;
+float ki = 10;
+float kd = 0.01;
+//////////////////////////////////
+//Define Variables we'll be connecting to
+double g_Setpoint, g_Input, g_Output;
+
+//Specify the links and initial tuning parameters
+PID myPID(&g_Input, &g_Output, &g_Setpoint,kp,ki,kd, DIRECT);
+
 
 double set_speed = 0;
 double max_Speed = 1000; // ticks/s
@@ -102,11 +112,7 @@ double lastError = 0;  //last error of speed
 double cumError = 0;   //sum error of speed
 double rateError = 0;  //rate of change of error
 
-//////////// PID Gains ///////////
-float kp = .5;
-float ki = 10;
-float kd = 0.01;
-//////////////////////////////////
+
 
 double effortPID = 0;
 double maxEffort = max_Speed;     // previously defined in ticks/s

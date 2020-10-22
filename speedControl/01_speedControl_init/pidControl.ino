@@ -8,8 +8,9 @@ int pidSpeedControl(int set_Speed, int real_Speed) {
   }
 
   // shift error values
-  for(i=errorArraySize-1;i>0;i--)
+  for(i=errorArraySize-1;i>0;i--){
     errorArray[i] = errorArray[i-1];
+  }
   
   int effort = neutral;
   int errorSum = 0;
