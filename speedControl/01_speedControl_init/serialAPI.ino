@@ -49,11 +49,18 @@ void recvWithEndMarker() {
       if(strcmp(receivedChars, "pollSteering") == 0)  pollSteering();
       if(strcmp(receivedChars, "pollMode") == 0)  pollMode();
       if(strcmp(receivedChars, "pollAll") == 0)  pollAll();
+      if(strcmp(receivedChars, "calMaxForward") == 0) ;
+      if(strcmp(receivedChars, "calMaxReverse") == 0) ;
+      if(strcmp(receivedChars, "calNeutralThrottle") == 0) ;
+      if(strcmp(receivedChars, "calMaxLeft") == 0) ;
+      if(strcmp(receivedChars, "calMaxRight") == 0) ;
+      if(strcmp(receivedChars, "calNeutralSteering") == 0) ;
+      
    }
     newData = false;
  }
 
-
+//////////////////// Commanding ////////////////////
  void commandSpeed(int intVal){ // Sets the desired speed from SBC
   //
   g_roboThrottle = intVal;
@@ -70,6 +77,9 @@ void commandShutdown(){
   g_throttlePWM = neutral;
   
 }
+
+
+/////////////////// Polling /////////////////////////
 
 void pollSpeed(){
   serial.print("speed_");
@@ -102,3 +112,6 @@ void pollAll(){
   pollSpeed();
   
 }
+
+
+//////////////// Calibrating /////////////////////
