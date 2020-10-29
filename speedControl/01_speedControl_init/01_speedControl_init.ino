@@ -1,14 +1,21 @@
-/////// RC Reciever Initializations ///////////
-#include "PWM.hpp"                          ///
+#include "PWM.hpp"                          
 #include <avr/wdt.h>
 #include <PID_v1.h>
 //#include <KalmanFilter.h>
 
 //KalmanFilter kalmanfilter;
+/////// RC Reciever Initializations ///////////
+                                            ///
 
 int maxRcRange = 2000;
 int minRcRange = 1000;
 int neutralRC = 1500;
+
+enum driveModeEnum {
+  rcDrive
+  roboDrive
+  eStop
+}
 
 const int steeringPin = 7;
 const int throttlePin = 8;
@@ -19,8 +26,8 @@ PWM modeRC(modePin);
 const int steeringArraySize = 50;
 int steeringArray[steeringArraySize]; // for smoothing
 int steeringSum = 0;
-int steeringAngle = neutralRC;
-int throttlePosition = neutralRC;
+int g_steeringAngleRC = neutralRC;
+int g_throttlePositionRC = neutralRC;
 const int throttleArraySize = 5;
 int throttleArray[throttleArraySize];   // for smoothing
 int throttleSum = 0;
@@ -90,15 +97,15 @@ float dt = timeChange * 0.001; //Note:The value of dt is the filter sampling tim
 ///// Speed Controller Initializations ////////
                                             ///
 //////////// PID Gains ///////////
-float kp = .5;
-float ki = 10;
-float kd = 0.01;
+const float kp = .5;
+const float ki = 10;
+const float kd = 0.01;
 //////////////////////////////////
 //Define Variables we'll be connecting to
 double g_Setpoint, g_Input, g_Output;
 
 //Specify the links and initial tuning parameters
-PID myPID(&g_Input, &g_Output, &g_Setpoint,kp,ki,kd, DIRECT);
+PID speedPID(&g_Input, &g_Output, &g_Setpoint,kp,ki,kd, DIRECT);
 
 
 double set_speed = 0;

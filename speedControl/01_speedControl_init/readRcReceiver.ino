@@ -2,19 +2,18 @@
 ///////////////// Getting Latest Steering Value /////////////////////
 
 void getSteering() {
-  steeringAngle = steeringRC.getValue();   
-  steeringPWM = map(steeringAngle,minRcRange,maxRcRange,fullRight,fullLeft);
+  g_rcSteer = steeringRC.getValue();   
 } // getSteering()
 
 
 ///////////////// Getting Latest Throttle Value /////////////////////
 void getThrottle() {
 
-  throttlePosition = throttleRC.getValue();
+  g_rcThrottle = throttleRC.getValue();
   
   // Trigger Deadzone
-  if (abs(throttlePosition - neutralRC) < 10){
-    throttlePosition = neutralRC;
+  if (abs(g_rcThrottle - neutralRC) < 10){
+    g_rcThrottle = neutralRC;
   }
   
 } // getThrottle()
@@ -22,21 +21,19 @@ void getThrottle() {
 
 ///////////////// Getting Latest Drive Mode /////////////////////
 void getDriveMode() {
-
- driveMode = modeRC.getValue(); 
+  int mode
+  mode = modeRC.getValue(); 
   
-  if (driveMode > 1700) {
-    throttlePWM = map(throttlePosition,minRcRange,maxRcRange,wideOpenReverse,wideOpenThrottle);
+  if (mode > 1700) {
+    g_driveModeEnum = rcDrive;
   }
-  else if (driveMode > 1200) {
+  else if (mode > 1200) {
     
-    set_speed = map(throttlePosition,minRcRange,maxRcRange,min_Speed,max_Speed);
-    effortPID = pidSpeedControl(set_speed,avg_speed);
-    //Serial.print("\tIn Speed Control Mode - set speed: "); 
-    //Serial.println(set_speed);
-    throttlePWM = map(effortPID,minEffort,maxEffort,wideOpenReverse,wideOpenThrottle);
+    g_driveModeEnum = roboDrive;
   }
   else {
+
+    g_driveModeEnum = eStop;
     throttlePWM = neutral;
   }
   

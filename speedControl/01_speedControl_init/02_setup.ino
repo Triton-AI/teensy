@@ -15,14 +15,26 @@ void setup() {
 throttleRC.begin(true); // PWM on pin 2 reading PWM HIGH duration
 steeringRC.begin(true);
 modeRC.begin(true);
-
-                                      
+                              
 myServo.attach(servoPin);
 myServo.write(90);          // may not be necessary
 myESC.attach(escPin);
 myESC.write(90);            // may not be necessary
                                       //
 ////////////////////////////////////////
+
+
+////////////////////////////////////////
+//      RC Setup                      //
+//initialize the variables we're linked to
+  g_Input = 0;
+  g_Setpoint = 0;
+
+  //turn the PID on
+  speedPID.SetMode(AUTOMATIC);
+                                      //
+////////////////////////////////////////
+
 
 wdt_enable(WDTO_250MS); // Enable low level watchdog timer
 
