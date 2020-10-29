@@ -4,6 +4,10 @@ void loop() {
  // the program is alive...for now. 
   wdt_reset();
 
+ // Get latest from SBC
+ recvWithEndMarker();
+ runFunction();
+
 ///////////////// Calculating Vehicle Speed ////////////////////
 
  calcSpeed();
