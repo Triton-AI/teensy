@@ -24,16 +24,16 @@ switch (g_driveModeEnum) {
     
   case roboDrive:
     pidControl(g_roboThrottle);
-    steeringControl(g_roboSteer)
+    steeringControl(g_roboSteer);
     break;
     
-  case eStop:
-    throttlePWM = neutral;
+  default:
+    g_throttlePWM = neutral;
     steeringControl(g_rcSteer);
 
 } // end switch case
 
 ///////////////////////Write to Motors ////////////////////////////
-  writeToServo(steeringPWM);
-  writeToESC(throttlePWM);
+  writeToServo(g_steeringPWM);
+  writeToESC(g_throttlePWM);
 }                                                             

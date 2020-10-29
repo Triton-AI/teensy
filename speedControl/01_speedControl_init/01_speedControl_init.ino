@@ -7,15 +7,17 @@
 /////// RC Reciever Initializations ///////////
                                             ///
 
-int maxRcRange = 2000;
-int minRcRange = 1000;
+int g_maxRcRange = 2000;
+int g_minRcRange = 1000;
 int neutralRC = 1500;
 
-enum driveModeEnum {
-  rcDrive
-  roboDrive
+enum driveMode {
+  rcDrive,
+  roboDrive,
   eStop
-}
+};
+
+driveMode g_driveModeEnum = eStop;
 
 const int steeringPin = 7;
 const int throttlePin = 8;
@@ -26,24 +28,28 @@ PWM modeRC(modePin);
 const int steeringArraySize = 50;
 int steeringArray[steeringArraySize]; // for smoothing
 int steeringSum = 0;
-int g_steeringAngleRC = neutralRC;
-int g_throttlePositionRC = neutralRC;
+int g_rcSteer = neutralRC;
+int g_rcThrottle = neutralRC;
 const int throttleArraySize = 5;
 int throttleArray[throttleArraySize];   // for smoothing
 int throttleSum = 0;
 int driveMode = 1;
 
-int throttlePWM = 90; // Initializing neutral throttle
-int wideOpenThrottle = 180;
+int g_throttlePWM = 90; // Initializing neutral throttle
+int g_wideOpenThrottle = 180;
 int neutral = 90;
-int wideOpenReverse = 0;
+int g_wideOpenReverse = 0;
 
-int steeringPWM = 90; // Initializing neutral steering
-int fullRight = 0;
-int fullLeft = 180;
+int g_steeringPWM = 90; // Initializing neutral steering
+int g_fullRight = 0;
+int g_fullLeft = 180;
 
                                             ///
 ////// End RC Reciever Initializations ////////
+
+int g_roboThrottle = neutralRC;
+int g_roboSteer = neutralRC;
+
 
 /////// Servo & ESC Initializations ///////////
                                             ///
@@ -83,7 +89,7 @@ float omegaB = 0;
 float omegaC = 0;
 float omegaAvg = 0;
 float encoderSpeed = 0;
-double avg_speed = 0;
+double g_avgSpeed = 0;
 bool inReverse = false;
 
 
@@ -109,8 +115,8 @@ PID speedPID(&g_Input, &g_Output, &g_Setpoint,kp,ki,kd, DIRECT);
 
 
 double set_speed = 0;
-double max_Speed = 1000; // ticks/s
-double min_Speed = max_Speed * (-1); // ticks/s
+double g_max_Speed = 1000; // ticks/s
+double g_min_Speed = g_max_Speed * (-1); // ticks/s
 
 const int errorArraySize = 100;
 double errorArray[errorArraySize]; //error of speed = set_speed - avg_speed (made an array for smoothing purposes
@@ -122,8 +128,8 @@ double rateError = 0;  //rate of change of error
 
 
 double effortPID = 0;
-double maxEffort = max_Speed;     // previously defined in ticks/s
-double minEffort = min_Speed;     // previously defined in ticks/s
+double g_maxEffort = g_max_Speed;     // previously defined in ticks/s
+double g_minEffort = g_min_Speed;     // previously defined in ticks/s
 
 double currentTime, previousTime;
 

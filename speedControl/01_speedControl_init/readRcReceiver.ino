@@ -21,7 +21,7 @@ void getThrottle() {
 
 ///////////////// Getting Latest Drive Mode /////////////////////
 void getDriveMode() {
-  int mode
+  int mode;
   mode = modeRC.getValue(); 
   
   if (mode > 1700) {
@@ -34,7 +34,7 @@ void getDriveMode() {
   else {
 
     g_driveModeEnum = eStop;
-    throttlePWM = neutral;
+    g_throttlePWM = neutral;
   }
   
 }

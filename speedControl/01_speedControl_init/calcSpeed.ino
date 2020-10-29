@@ -36,6 +36,6 @@ void calcSpeed() {
         omegaAvg *= (-1);
     }
 
-    avg_speed = omegaAvg;
+    g_avgSpeed = omegaAvg;
 
 }
