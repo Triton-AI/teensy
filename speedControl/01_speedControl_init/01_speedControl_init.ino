@@ -17,8 +17,6 @@ enum driveMode {
   eStop
 };
 
-driveMode g_driveModeEnum = eStop;
-
 const int steeringPin = 7;
 const int throttlePin = 8;
 const int modePin = 9;
@@ -32,7 +30,7 @@ int g_rcThrottle = g_neutralRC;     // gets set by RC receiver [1000,2000]
 int g_roboThrottle = g_neutralRC;   // gets set by serial interface [1000,2000]
 int g_roboSteer = g_neutralRC;      // gets set by serial interface [1000,2000]
 
-driveMode g_driveModeEnum = rcDrive; // gets set by RC receiver
+driveMode g_driveModeEnum = eStop; // gets set by RC receiver
 
 int g_throttlePWM = 90; // Initializing neutral throttle
 int g_wideOpenThrottle = 180;
@@ -45,9 +43,6 @@ int g_fullLeft = 180;
 
                                             ///
 ////// End RC Reciever Initializations ////////
-
-int g_roboThrottle = neutralRC;
-int g_roboSteer = neutralRC;
 
 
 /////// Servo & ESC Initializations ///////////

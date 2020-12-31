@@ -84,7 +84,7 @@ void commandSteering(int intVal){ // Sets the desired steering from SBC
 
 
 void commandShutdown(){
-  g_throttlePWM = neutral;
+  g_throttlePWM = g_neutralPWM;
   
 }
 
@@ -92,26 +92,26 @@ void commandShutdown(){
 /////////////////// Polling /////////////////////////
 
 void pollSpeed(){
-  serial.print("speed_");
-  serial.print(g_avgSpeed + "\n");
+  Serial.print("speed_");
+  //Serial.print(g_avgSpeed + "\n"); - compile error, need to turn speed into string
 }
 
 
 void pollThrottle(){
-  serial.print("throttle_");
-  serial.print(g_rcThrottle + "\n");
+  Serial.print("throttle_");
+  Serial.print(g_rcThrottle + "\n");
 }
 
 
 void pollSteering(){
-  serial.print("steering_");
-  serial.print(g_rcSteer + "\n");
+  Serial.print("steering_");
+  Serial.print(g_rcSteer + "\n");
 }
 
 
 void pollMode(){
-  serial.print("mode_");
-  serial.print(g_rcSteer + "\n");
+  Serial.print("mode_");
+  Serial.print(g_rcSteer + "\n");
 }
 
 
