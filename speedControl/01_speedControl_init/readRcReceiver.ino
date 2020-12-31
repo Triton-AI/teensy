@@ -3,15 +3,15 @@
  *    * Read steering channel
  *    * Read throttle channel
  *    * Read drive mode channel
- *    
- *    
- *    Store in global variables 
- * 
+ *
+ *
+ *    Store in global variables
+ *
  */
 ///////////////// Getting Latest Steering Value /////////////////////
 
 void getSteering() {
-  g_rcSteer = steeringRC.getValue();   
+  g_rcSteer = steeringRC.getValue();
 } // getSteering()
 
 
@@ -19,25 +19,25 @@ void getSteering() {
 void getThrottle() {
 
   g_rcThrottle = throttleRC.getValue();
-  
+
   // Trigger Deadzone
   if (abs(g_rcThrottle - g_neutralRC) < 10){
     g_rcThrottle = g_neutralRC;
   }
-  
+
 } // getThrottle()
 
 
 ///////////////// Getting Latest Drive Mode /////////////////////
 void getDriveMode() {
   int mode;
-  mode = modeRC.getValue(); 
-  
+  mode = modeRC.getValue();
+
   if (mode > 1700) {
     g_driveModeEnum = rcDrive;
   }
   else if (mode > 1200) {
-    
+
     g_driveModeEnum = roboDrive;
   }
   else {
@@ -45,7 +45,7 @@ void getDriveMode() {
     g_driveModeEnum = eStop;
     g_throttlePWM = g_neutralPWM;
   }
-  
+
 }
 
 /*
@@ -53,8 +53,8 @@ void smootheSteering() {
   // shift array values
   for(i=steeringArraySize-1;i>0;i--)
     steeringArray[i] = steeringArray[i-1];
-    
-  steeringArray[0] = 
+
+  steeringArray[0] =
 
   steeringSum = 0;
 
@@ -69,7 +69,7 @@ void smootheThrottle() {
    // shift array values
   for(i=throttleArraySize-1;i>0;i--)
     throttleArray[i] = throttleArray[i-1];
-  throttleArray[0] = 
+  throttleArray[0] =
 
   throttleSum = 0;
 
@@ -80,7 +80,3 @@ void smootheThrottle() {
   } // smootheThrottle()
 
   */
-  
- 
-
-  

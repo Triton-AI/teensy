@@ -17,6 +17,8 @@ enum driveMode {
   eStop
 };
 
+driveMode g_driveModeEnum = eStop;
+
 const int steeringPin = 7;
 const int throttlePin = 8;
 const int modePin = 9;
@@ -44,10 +46,13 @@ int g_fullLeft = 180;
                                             ///
 ////// End RC Reciever Initializations ////////
 
+int g_roboThrottle = neutralRC;
+int g_roboSteer = neutralRC;
+
 
 /////// Servo & ESC Initializations ///////////
                                             ///
-#include <Servo.h> 
+#include <Servo.h>
 
 const int servoPin = 5;
 Servo myServo;
@@ -88,7 +93,7 @@ bool inReverse = false;
 
 
 ////////////////Kalman_Filter//////////////////
-float Q_angle = 0.001, Q_gyro = 0.005; 
+float Q_angle = 0.001, Q_gyro = 0.005;
 float R_angle = 0.5 , C_0 = 1;
 float timeChange = 5; //Filter sampling time interval (unit:milliseconds)
 float dt = timeChange * 0.001; //Note:The value of dt is the filter sampling time
@@ -109,8 +114,8 @@ PID speedPID(&g_Input, &g_Output, &g_Setpoint,kp,ki,kd, DIRECT);
 
 
 double set_speed = 0;
-double max_Speed = 1000; // ticks/s
-double min_Speed = max_Speed * (-1); // ticks/s
+double g_max_Speed = 1000; // ticks/s
+double g_min_Speed = g_max_Speed * (-1); // ticks/s
 
 const int errorArraySize = 100;
 double errorArray[errorArraySize]; //error of speed = set_speed - avg_speed (made an array for smoothing purposes
@@ -122,8 +127,8 @@ double rateError = 0;  //rate of change of error
 
 
 double effortPID = 0;
-double g_maxEffort = max_Speed;     // previously defined in ticks/s
-double g_minEffort = min_Speed;     // previously defined in ticks/s
+double g_maxEffort = g_max_Speed;     // previously defined in ticks/s
+double g_minEffort = g_min_Speed;     // previously defined in ticks/s
 
 double currentTime, previousTime;
 
