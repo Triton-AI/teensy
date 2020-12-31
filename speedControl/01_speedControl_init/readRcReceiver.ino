@@ -1,4 +1,13 @@
-
+/*
+ * readRCReceiver
+ *    * Read steering channel
+ *    * Read throttle channel
+ *    * Read drive mode channel
+ *    
+ *    
+ *    Store in global variables 
+ * 
+ */
 ///////////////// Getting Latest Steering Value /////////////////////
 
 void getSteering() {
@@ -12,8 +21,8 @@ void getThrottle() {
   g_rcThrottle = throttleRC.getValue();
   
   // Trigger Deadzone
-  if (abs(g_rcThrottle - neutralRC) < 10){
-    g_rcThrottle = neutralRC;
+  if (abs(g_rcThrottle - g_neutralRC) < 10){
+    g_rcThrottle = g_neutralRC;
   }
   
 } // getThrottle()
@@ -21,7 +30,7 @@ void getThrottle() {
 
 ///////////////// Getting Latest Drive Mode /////////////////////
 void getDriveMode() {
-  int mode
+  int mode;
   mode = modeRC.getValue(); 
   
   if (mode > 1700) {
@@ -34,7 +43,7 @@ void getDriveMode() {
   else {
 
     g_driveModeEnum = eStop;
-    throttlePWM = neutral;
+    g_throttlePWM = g_neutralPWM;
   }
   
 }

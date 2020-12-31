@@ -1,5 +1,19 @@
+/*
+ * driveContol
+ *    * Inputs: 
+ *      * Throttle
+ *      * Vehicle Speed
+ *    * Calculate
+ *      * Control effort
+ *      * Map effort to range of outputs
+ *    * Output
+ *      * Vehicle throttle
+ *      * Steering position
+ * 
+ */
 
-// Depenencies:
+
+// Dependencies:
 /*
  * g_Input
  * g_Setpoint
@@ -17,9 +31,9 @@
 void pidControl(int throttleInput){
 double effort = 0;
 
-    g_Input = avgSpeed;           // Input as vehicle speed
+    g_Input = g_avgSpeed;           // Input as vehicle speed
     g_Setpoint = throttleInput;   // Setpoint as throttle (RC/Auto)
-    speedPID.Compute()
+    speedPID.Compute();
     effort = g_Output;            // Control effort as output
 
     // Scaling effort

@@ -1,3 +1,13 @@
+/*
+ * recvWithEndMarker()
+ *  * Read serial stream, using a \0 to indicate breaks in strings
+ * 
+ * runFunction()
+ *  *  Maps input commands to functions
+ * 
+ * 
+ */
+
 void recvWithEndMarker() {
    static byte ndx = 0;
    char endMarker = '\n';

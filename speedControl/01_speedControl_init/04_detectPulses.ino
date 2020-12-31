@@ -1,3 +1,12 @@
+/*
+ * Detect pulses
+ *   * read in 3 phases of pulses
+ *   * determine direction of rotation
+ *   * calculate period of rotation per phase
+ * 
+ * 
+  */
+
 void detectAPulses() {
   if (digitalRead(pinB) == HIGH) { //Confirm if we are moving forward
      inReverse = false;

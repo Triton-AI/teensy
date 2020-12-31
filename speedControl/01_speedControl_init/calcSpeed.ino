@@ -1,3 +1,11 @@
+/*
+ * calcSpeed
+ *    * Calculate vehicle speed based on period of rotation per phase
+ *    * Calculate average of 3 vehicle speeds
+ * 
+ */
+
+
 void calcSpeed() {
  //////////////////////////////////////////////////////////////
     // Measuring period
@@ -36,6 +44,6 @@ void calcSpeed() {
         omegaAvg *= (-1);
     }
 
-    avg_speed = omegaAvg;
+    g_avgSpeed = omegaAvg;
 
 }

@@ -1,21 +1,21 @@
-#include "PWM.hpp"                          
-#include <avr/wdt.h>
-#include <PID_v1.h>
+#include "PWM.hpp"  // https://github.com/xkam1x/Arduino-PWM-Reader                       
+#include <avr/wdt.h> // https://github.com/vancegroup-mirrors/avr-libc/blob/master/avr-libc/include/avr/wdt.h
+#include <PID_v1.h> // https://github.com/br3ttb/Arduino-PID-Library
 //#include <KalmanFilter.h>
 
 //KalmanFilter kalmanfilter;
 /////// RC Reciever Initializations ///////////
                                             ///
 
-int maxRcRange = 2000;
-int minRcRange = 1000;
-int neutralRC = 1500;
+int g_maxRcRange = 2000;
+int g_minRcRange = 1000;
+int g_neutralRC = 1500;
 
-enum driveModeEnum {
-  rcDrive
-  roboDrive
+enum driveMode {
+  rcDrive,
+  roboDrive,
   eStop
-}
+};
 
 const int steeringPin = 7;
 const int throttlePin = 8;
@@ -23,27 +23,27 @@ const int modePin = 9;
 PWM steeringRC(steeringPin);
 PWM throttleRC(throttlePin);
 PWM modeRC(modePin);
-const int steeringArraySize = 50;
-int steeringArray[steeringArraySize]; // for smoothing
-int steeringSum = 0;
-int g_steeringAngleRC = neutralRC;
-int g_throttlePositionRC = neutralRC;
-const int throttleArraySize = 5;
-int throttleArray[throttleArraySize];   // for smoothing
-int throttleSum = 0;
-int driveMode = 1;
 
-int throttlePWM = 90; // Initializing neutral throttle
-int wideOpenThrottle = 180;
-int neutral = 90;
-int wideOpenReverse = 0;
 
-int steeringPWM = 90; // Initializing neutral steering
-int fullRight = 0;
-int fullLeft = 180;
+int g_rcSteer = g_neutralRC;        // gets set by RC receiver [1000,2000]
+int g_rcThrottle = g_neutralRC;     // gets set by RC receiver [1000,2000]
+int g_roboThrottle = g_neutralRC;   // gets set by serial interface [1000,2000]
+int g_roboSteer = g_neutralRC;      // gets set by serial interface [1000,2000]
+
+driveMode g_driveModeEnum = rcDrive; // gets set by RC receiver
+
+int g_throttlePWM = 90; // Initializing neutral throttle
+int g_wideOpenThrottle = 180;
+int g_neutralPWM = 90;
+int g_wideOpenReverse = 0;
+
+int g_steeringPWM = g_neutralPWM; // Initializing neutral steering
+int g_fullRight = 0;
+int g_fullLeft = 180;
 
                                             ///
 ////// End RC Reciever Initializations ////////
+
 
 /////// Servo & ESC Initializations ///////////
                                             ///
@@ -83,7 +83,7 @@ float omegaB = 0;
 float omegaC = 0;
 float omegaAvg = 0;
 float encoderSpeed = 0;
-double avg_speed = 0;
+double g_avgSpeed = 0;
 bool inReverse = false;
 
 
@@ -122,8 +122,8 @@ double rateError = 0;  //rate of change of error
 
 
 double effortPID = 0;
-double maxEffort = max_Speed;     // previously defined in ticks/s
-double minEffort = min_Speed;     // previously defined in ticks/s
+double g_maxEffort = max_Speed;     // previously defined in ticks/s
+double g_minEffort = min_Speed;     // previously defined in ticks/s
 
 double currentTime, previousTime;
 
