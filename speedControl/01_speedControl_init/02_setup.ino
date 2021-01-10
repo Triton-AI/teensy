@@ -1,6 +1,6 @@
 
 void setup() {
-  Serial.begin(9600); 
+  Serial.begin(115200); 
   pinMode(pinA, INPUT_PULLUP);   // configure the I.0 as a INPUTS
   pinMode(pinB, INPUT_PULLUP);
   pinMode(pinC, INPUT_PULLUP);
@@ -36,6 +36,6 @@ myESC.write(90);            // may not be necessary
 ////////////////////////////////////////
 
 
-wdt_enable(WDTO_250MS); // Enable low level watchdog timer
+//wdt_enable(WDTO_250MS); // Enable low level watchdog timer
 
 }

@@ -37,10 +37,9 @@ int g_wideOpenThrottle = 180;
 int g_neutralPWM = 90;
 int g_wideOpenReverse = 0;
 
-int g_steeringPWM = g_neutralPWM; // Initializing neutral steering
+int g_steeringPWM = g_neutralPWM; // Initializing neutral steering // ***************************We need this steeringNeutral instead of just having center value. NEED TO TALK Ian *****************************
 int g_fullRight = 0;
 int g_fullLeft = 180;
-
                                             ///
 ////// End RC Reciever Initializations ////////
 

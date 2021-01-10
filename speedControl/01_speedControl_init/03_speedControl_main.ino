@@ -5,41 +5,48 @@
  *   * Reset watchdog timer
  *   * Calculate current vehicle speed
  *   * Receive current driver inputs from RC controller
- *   * Seitch betwen input sources for steering & throttle
+ *   * Switch betwen input sources for steering & throttle
  *   * Send commands to motors
- *
  *
  */
 void loop() {
 
  // the program is alive...for now.
-  wdt_reset();
+  //wdt_reset();
 
  // Get latest from SBC
  recvWithEndMarker();
  runFunction();
 
+ 
+
 ///////////////// Calculating Vehicle Speed ////////////////////
 
  calcSpeed();
 
-///////////////// Getting Latest RC Values /////////////////////
-
- getSteering();
- getThrottle();
- getDriveMode();
-
-///////////////// Determining Drive Mode ///////////////////////
+/////////////////// Getting Latest RC Values /////////////////////
+//
+// getSteering();
+// getThrottle();
+// getDriveMode();
+//
+/////////////////// Determining Drive Mode ///////////////////////
 
 switch (g_driveModeEnum) {
   case rcDrive:
     pidControl(g_rcThrottle);
     steeringControl(g_rcSteer);
+    sendSpeed();   //<============================================================= do we need the argument for these 3 send functions? locations?
+    sendThrottle();
+    sendSteering();
     break;
 
   case roboDrive:
     pidControl(g_roboThrottle);
     steeringControl(g_roboSteer);
+    sendSpeed();
+    sendThrottle();
+    sendSteering();
     break;
 
   case eStop:
@@ -51,4 +58,7 @@ switch (g_driveModeEnum) {
 ///////////////////////Write to Motors ////////////////////////////
   writeToServo(g_steeringPWM);
   writeToESC(g_throttlePWM);
+  Serial.println(g_steeringPWM);
+  Serial.println(g_throttlePWM);
+  delay(1000);
 }
