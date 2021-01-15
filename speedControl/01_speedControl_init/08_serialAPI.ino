@@ -44,6 +44,8 @@ void recvWithEndMarker() {
         }
         ndx = 0;
         newData = true;
+        Serial.println(receivedChars);
+        Serial.println(receivedNums);
      }
    }
 }
@@ -69,11 +71,11 @@ void recvWithEndMarker() {
 
      //Calibration from JTN
       if(strcmp(receivedChars, "calMaxForward") == 0)  calibration(&g_wideOpenThrottle, (int)val);
-      if(strcmp(receivedChars, "calMaxReverse") == 0)  calibration(&g_neutralPWM, (int)val);
-      if(strcmp(receivedChars, "calNeutralThrottle") == 0)  calibration(&g_neutralPWM, (int)val);
+      if(strcmp(receivedChars, "calMaxReverse") == 0)  calibration(&g_wideOpenReverse, (int)val);
+      if(strcmp(receivedChars, "calNeutralThrottle") == 0)  calibration(&g_neutralThrottle, (int)val);
       if(strcmp(receivedChars, "calMaxLeft") == 0)  calibration(&g_fullLeft, (int)val);
       if(strcmp(receivedChars, "calMaxRight") == 0)  calibration(&g_fullRight, (int)val);
-      if(strcmp(receivedChars, "calNeutralSteering") == 0)  calibration(&g_steeringPWM, (int)val);
+      if(strcmp(receivedChars, "calNeutralSteering") == 0)  calibration(&g_neutralSteering, (int)val);
       
    }
     newData = false;
@@ -81,8 +83,10 @@ void recvWithEndMarker() {
 
 //////////////////// Commanding ////////////////////
  void commandSpeed(int intVal){ // Sets the desired speed from SBC
-  //
+  health = 20000000;
+  //Serial.println("commandspeed is being called");
   g_roboThrottle = intVal;
+  //g_rcSteer = intVal;
   
 }
 
@@ -94,7 +98,7 @@ void commandSteering(int intVal){ // Sets the desired steering from SBC
 
 void commandShutdown(){
   Serial.print("Shut down!");
-  g_throttlePWM = g_neutralPWM;
+  //g_throttlePWM = g_neutralPWM; //changes needed!!!!!!!!!!!!
   
 }
 
@@ -112,7 +116,7 @@ int commandThrottle(float intVal){    //, int maxForward, int neutral, int g_wid
     
 }
 
-/////////////////// Polling /////////////////////////
+/////////////////// Sending /////////////////////////
 
 void sendSpeed(){
   Serial.print("speed_");

@@ -7,6 +7,8 @@
 /////// RC Reciever Initializations ///////////
                                             ///
 
+int health = 200;
+
 int g_maxRcRange = 2000;
 int g_minRcRange = 1000;
 int g_neutralRC = 1500;
@@ -34,10 +36,10 @@ driveMode g_driveModeEnum = eStop; // gets set by RC receiver
 
 int g_throttlePWM = 90; // Initializing neutral throttle
 int g_wideOpenThrottle = 180;
-int g_neutralPWM = 90;
+int g_neutralThrottle= 90;
 int g_wideOpenReverse = 0;
 
-int g_steeringPWM = g_neutralPWM; // Initializing neutral steering // ***************************We need this steeringNeutral instead of just having center value. NEED TO TALK Ian *****************************
+int g_neutralSteering = 90; // Initializing neutral steering // ***************************We need this steeringNeutral instead of just having center value. NEED TO TALK Ian *****************************
 int g_fullRight = 0;
 int g_fullLeft = 180;
                                             ///
