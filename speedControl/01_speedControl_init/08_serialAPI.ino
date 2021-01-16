@@ -83,11 +83,9 @@ void recvWithEndMarker() {
 
 //////////////////// Commanding ////////////////////
  void commandSpeed(int intVal){ // Sets the desired speed from SBC
-  health = 20000000;
   //Serial.println("commandspeed is being called");
   g_roboThrottle = intVal;
   //g_rcSteer = intVal;
-  
 }
 
 

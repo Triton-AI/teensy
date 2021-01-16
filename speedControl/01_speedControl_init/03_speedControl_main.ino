@@ -60,8 +60,6 @@ switch (g_driveModeEnum) {
   writeToESC(g_neutralThrottle);
   Serial.println(g_neutralSteering);
   Serial.println(g_neutralThrottle);
-  //delay(1000);
+  delay(1000);
   Serial.println(g_driveModeEnum);
-  Serial.println(health);
-  if (health > 0) health -= 1;
 }

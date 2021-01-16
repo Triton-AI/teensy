@@ -7,8 +7,6 @@
 /////// RC Reciever Initializations ///////////
                                             ///
 
-int health = 200;
-
 int g_maxRcRange = 2000;
 int g_minRcRange = 1000;
 int g_neutralRC = 1500;
