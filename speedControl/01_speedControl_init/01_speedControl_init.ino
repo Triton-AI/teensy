@@ -24,11 +24,12 @@ PWM steeringRC(steeringPin);
 PWM throttleRC(throttlePin);
 PWM modeRC(modePin);
 
-
+//human drive mode
 int g_rcSteer = g_neutralRC;        // gets set by RC receiver [1000,2000]
 int g_rcThrottle = g_neutralRC;     // gets set by RC receiver [1000,2000]
-int g_roboThrottle = g_neutralRC;   // gets set by serial interface [1000,2000]
+//auto drive mode
 int g_roboSteer = g_neutralRC;      // gets set by serial interface [1000,2000]
+int g_roboThrottle = g_neutralRC;   // gets set by serial interface [1000,2000]
 
 driveMode g_driveModeEnum = eStop; // gets set by RC receiver
 

@@ -115,6 +115,7 @@ int commandThrottle(float intVal){    //, int maxForward, int neutral, int g_wid
 }
 
 /////////////////// Sending /////////////////////////
+//Teensy send info to SBC
 
 void sendSpeed(){
   Serial.print("speed_");

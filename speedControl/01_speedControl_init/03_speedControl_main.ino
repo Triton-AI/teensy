@@ -15,10 +15,8 @@ void loop() {
   //wdt_reset();
 
  // Get latest from SBC
- recvWithEndMarker();
- runFunction();
-
- 
+ recvWithEndMarker(); //receiving commands from SBC
+ runFunction(); //process the command
 
 ///////////////// Calculating Vehicle Speed ////////////////////
 
@@ -60,6 +58,6 @@ switch (g_driveModeEnum) {
   writeToESC(g_neutralThrottle);
   Serial.println(g_neutralSteering);
   Serial.println(g_neutralThrottle);
-  delay(1000);
   Serial.println(g_driveModeEnum);
+  delay(2000);
 }
