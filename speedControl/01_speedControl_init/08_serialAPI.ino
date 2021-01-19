@@ -75,7 +75,7 @@ void recvWithEndMarker() {
       if(strcmp(receivedChars, "calNeutralThrottle") == 0)  calibration(&g_neutralThrottle, (int)val);
       if(strcmp(receivedChars, "calMaxLeft") == 0)  calibration(&g_fullLeft, (int)val);
       if(strcmp(receivedChars, "calMaxRight") == 0)  calibration(&g_fullRight, (int)val);
-      if(strcmp(receivedChars, "calNeutralSteering") == 0)  calibration(&g_neutralSteering, (int)val);
+      if(strcmp(receivedChars, "calNeutralSteering") == 0)  calibration(&g_steeringPWM, (int)val);
       
    }
     newData = false;
@@ -101,17 +101,7 @@ void commandShutdown(){
 }
 
 int commandThrottle(float intVal){    //, int maxForward, int neutral, int g_wideOpenReverse){
-  g_rcThrottle = intVal;
-  
-//  if (intVal == 0) //neutral throttle
-//    return g_neutralPWM;
-//
-//  else if (intVal < 0) //negative throttle
-//    return (int)((g_neutralPWM) + (g_neutralPWM - g_wideOpenReverse) * intVal);
-//
-//  else if (intVal > 0) //positive throttle
-//    return (int)((g_neutralPWM) + (g_wideOpenThrottle - g_neutralPWM) * intVal);
-    
+  g_roboThrottle = intVal;
 }
 
 /////////////////// Sending /////////////////////////
@@ -125,19 +115,21 @@ void sendSpeed(){
 
 void sendThrottle(){
   Serial.print("throttle_");
-  Serial.print(String(g_rcThrottle) + "\n");
+  Serial.print(String(g_throttlePWM) + "\n");
+//  Serial.print(String(g_rcThrottle) + "\n");
 }
 
 
 void sendSteering(){
   Serial.print("steering_");
-  Serial.print(String(g_rcSteer) + "\n");
+  Serial.print(String(g_steeringPWM) + "\n");
+//  Serial.print(String(g_rcSteer) + "\n");
 }
 
 
 void sendMode(){
   Serial.print("mode_");
-  Serial.print(String(g_rcSteer) + "\n");
+  Serial.print(String(g_driveModeEnum) + "\n");
 }
 
 

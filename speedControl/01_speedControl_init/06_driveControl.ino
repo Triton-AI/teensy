@@ -51,7 +51,7 @@ double effort = 0;
 
 
 void steeringControl(int steeringInput){
-  g_neutralSteering = map(steeringInput,g_minRcRange,g_maxRcRange,g_fullRight,g_fullLeft);
+  g_steeringPWM = map(steeringInput,g_minRcRange,g_maxRcRange,g_fullRight,g_fullLeft);
   
 }
 

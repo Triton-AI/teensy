@@ -26,7 +26,7 @@ void loop() {
 
  getSteering();
  getThrottle();
- getDriveMode();
+ //getDriveMode();
 
 /////////////////// Determining Drive Mode ///////////////////////
 
@@ -42,9 +42,9 @@ switch (g_driveModeEnum) {
   case roboDrive:
     pidControl(g_roboThrottle);  // This maps g_roboThrottle to update g_throttlePWM
     steeringControl(g_roboSteer); //This maps g_roboSteer to update g_steeringPWM
-    sendSpeed();
-    sendThrottle();
-    sendSteering();
+    sendSpeed();                 //print current speed
+    sendThrottle();              //print throttle
+    sendSteering();              //print steering
     break;
 
   case eStop:
@@ -54,10 +54,10 @@ switch (g_driveModeEnum) {
 } // end switch case
 
 ///////////////////////Write to Motors ////////////////////////////
-  writeToServo(g_neutralSteering);
-  writeToESC(g_neutralThrottle);
-  Serial.println(g_neutralSteering);
-  Serial.println(g_neutralThrottle);
+  writeToServo(g_steeringPWM);
+  writeToESC(g_throttlePWM);//(g_neutralThrottle);
+  Serial.println(g_steeringPWM);
+  Serial.println(g_throttlePWM);
   Serial.println(g_driveModeEnum);
   delay(2000);
 }
