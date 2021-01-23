@@ -9,10 +9,27 @@
  *   * Send commands to motors
  *
  */
+
+int loopcount = 0;
 void loop() {
 
+loopcount++;
+Serial.print("Loopcount: \t");
+Serial.println(loopcount);
+
+if (loopcount < 20000){
  // the program is alive...for now.
-  //wdt_reset();
+
+// use the following 4 lines to kick the dog
+    noInterrupts();
+    WDOG_REFRESH = 0xA602;
+    WDOG_REFRESH = 0xB480;
+    interrupts()
+
+}
+
+
+// if you don't refresh the watchdog timer before it runs out, the system will be rebooted
 
  // Get latest from SBC
  recvWithEndMarker(); //receiving commands from SBC
@@ -59,5 +76,5 @@ switch (g_driveModeEnum) {
   Serial.println(g_steering);
   Serial.println(g_throttle);
   Serial.println(g_driveModeEnum);
-  delay(2000);
+  
 }

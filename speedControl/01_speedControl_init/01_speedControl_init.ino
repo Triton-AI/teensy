@@ -1,5 +1,4 @@
-#include "PWM.hpp"  // https://github.com/xkam1x/Arduino-PWM-Reader                       
-#include <avr/wdt.h> // https://github.com/vancegroup-mirrors/avr-libc/blob/master/avr-libc/include/avr/wdt.h
+#include "PWM.hpp"  // https://github.com/xkam1x/Arduino-PWM-Reader                   
 #include <PID_v1.h> // https://github.com/br3ttb/Arduino-PID-Library
 //#include <KalmanFilter.h>
 
