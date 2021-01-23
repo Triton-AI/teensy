@@ -32,32 +32,32 @@ void loop() {
 
 switch (g_driveModeEnum) {
   case rcDrive:
-    pidControl(g_rcThrottle); // This maps g_rcThrottle to update g_throttlePWM & probably don't need to have pidControl***************************
-    steeringControl(g_rcSteer); //This maps g_rcSteer to update g_steeringPWM
+    pidControl(g_rcThrottle); // This maps g_rcThrottle to update g_throttle & probably don't need to have pidControl***************************
+    steeringControl(g_rcSteer); //This maps g_rcSteer to update g_steering
     sendSpeed();   //<============================================================= do we need the argument for these 3 send functions? locations?
     sendThrottle();
     sendSteering();
     break;
 
   case roboDrive:
-    pidControl(g_roboThrottle);  // This maps g_roboThrottle to update g_throttlePWM
-    steeringControl(g_roboSteer); //This maps g_roboSteer to update g_steeringPWM
+    pidControl(g_roboThrottle);  // This maps g_roboThrottle to update g_throttle
+    steeringControl(g_roboSteer); //This maps g_roboSteer to update g_steering
     sendSpeed();                 //print current speed
     sendThrottle();              //print throttle
     sendSteering();              //print steering
     break;
 
   case eStop:
-    g_throttlePWM = g_neutralThrottle;
-    steeringControl(g_rcSteer); //This maps g_rcSteer to update g_steeringPWM
+    g_throttle = g_neutralThrottle;
+    steeringControl(g_rcSteer); //This maps g_rcSteer to update g_steering
 
 } // end switch case
 
 ///////////////////////Write to Motors ////////////////////////////
-  writeToServo(g_steeringPWM);
-  writeToESC(g_throttlePWM);//(g_neutralThrottle);
-  Serial.println(g_steeringPWM);
-  Serial.println(g_throttlePWM);
+  writeToServo(g_steering);
+  writeToESC(g_throttle);//(g_neutralThrottle);
+  Serial.println(g_steering);
+  Serial.println(g_throttle);
   Serial.println(g_driveModeEnum);
   delay(2000);
 }

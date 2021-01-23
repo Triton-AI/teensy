@@ -43,7 +43,7 @@ void getDriveMode() {
   else {
 
     g_driveModeEnum = eStop;
-    g_throttlePWM = g_neutralThrottle;
+    g_throttle = g_neutralThrottle;
   }
 
 }

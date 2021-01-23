@@ -22,7 +22,7 @@
  * g_minEffort
  * g_wideOpenReverse
  * g_wideOpenThrottle
- * g_steeringPWM 
+ * g_steering 
  * g_minRcRange
  * g_maxRcRange
  * g_fullRight
@@ -45,13 +45,13 @@ double effort = 0;
     }
 
     // Mapping control effort to PWM range
-    g_throttlePWM = map(effort,g_minEffort,g_maxEffort,g_wideOpenReverse,g_wideOpenThrottle);
+    g_throttle = map(effort,g_minEffort,g_maxEffort,g_wideOpenReverse,g_wideOpenThrottle);
     
 }
 
 
 void steeringControl(int steeringInput){
-  g_steeringPWM = map(steeringInput,g_minRcRange,g_maxRcRange,g_fullRight,g_fullLeft);
+  g_steering = map(steeringInput,g_minRcRange,g_maxRcRange,g_fullRight,g_fullLeft);
   
 }
 

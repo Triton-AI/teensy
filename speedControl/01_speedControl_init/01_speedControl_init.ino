@@ -33,12 +33,12 @@ int g_roboThrottle = g_neutralRC;   // gets set by serial interface [1000,2000]
 
 driveMode g_driveModeEnum = roboDrive; //eStop; // gets set by RC receiver
 
-int g_throttlePWM = 90; // Initializing neutral throttle
+int g_throttle = 90; // Initializing neutral throttle
 int g_wideOpenThrottle = 180;
 int g_neutralThrottle= 90;
 int g_wideOpenReverse = 0;
 
-int g_steeringPWM = 90; // Initializing neutral steering // ***************************We need this steeringNeutral instead of just having center value. NEED TO TALK Ian *****************************
+int g_steering = 90; // Initializing neutral steering // ***************************We need this steeringNeutral instead of just having center value. NEED TO TALK Ian *****************************
 int g_fullRight = 0;
 int g_fullLeft = 180;
                                             ///

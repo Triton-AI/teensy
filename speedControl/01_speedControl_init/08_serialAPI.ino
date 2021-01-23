@@ -75,7 +75,7 @@ void recvWithEndMarker() {
       if(strcmp(receivedChars, "calNeutralThrottle") == 0)  calibration(&g_neutralThrottle, (int)val);
       if(strcmp(receivedChars, "calMaxLeft") == 0)  calibration(&g_fullLeft, (int)val);
       if(strcmp(receivedChars, "calMaxRight") == 0)  calibration(&g_fullRight, (int)val);
-      if(strcmp(receivedChars, "calNeutralSteering") == 0)  calibration(&g_steeringPWM, (int)val);
+      if(strcmp(receivedChars, "calNeutralSteering") == 0)  calibration(&g_steering, (int)val);
       
    }
     newData = false;
@@ -96,7 +96,7 @@ void commandSteering(int intVal){ // Sets the desired steering from SBC
 
 void commandShutdown(){
   Serial.print("Shut down!");
-  //g_throttlePWM = g_neutralPWM; //changes needed!!!!!!!!!!!!
+  //g_throttle = g_neutralPWM; //changes needed!!!!!!!!!!!!
   
 }
 
@@ -115,14 +115,14 @@ void sendSpeed(){
 
 void sendThrottle(){
   Serial.print("throttle_");
-  Serial.print(String(g_throttlePWM) + "\n");
+  Serial.print(String(g_throttle) + "\n");
 //  Serial.print(String(g_rcThrottle) + "\n");
 }
 
 
 void sendSteering(){
   Serial.print("steering_");
-  Serial.print(String(g_steeringPWM) + "\n");
+  Serial.print(String(g_steering) + "\n");
 //  Serial.print(String(g_rcSteer) + "\n");
 }
 
@@ -167,8 +167,8 @@ JTN: “calNeutralSteering_400\n”
 //void calMaxRight(int *g_fullRight, int newFullRight){
 //  *g_fullRight = newFullRight;
 //}
-//void calNeutralSteering(int *g_steeringPWM, int newNeutralSteering){
-//  //*g_steeringPWM = newNeutralSteering;
+//void calNeutralSteering(int *g_steering, int newNeutralSteering){
+//  //*g_steering = newNeutralSteering;
 //}
 //
 void calibration(int *toCalibrate, int val){
