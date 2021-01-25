@@ -56,7 +56,7 @@ void recvWithEndMarker() {
       //Serial.print(receivedChars);
       float val = atof(receivedNums); // -1, 1; ,convert string to int or float
 
-     //JTN sends commands to Teensy
+     //JTN sends commands to Teensy during robomode
       if(strcmp(receivedChars, "commandSpeed") == 0) commandSpeed((int)val);
       if(strcmp(receivedChars, "commandSteering") == 0) commandSteering((int)val);
       if(strcmp(receivedChars, "commandThrottle") == 0) commandThrottle((int)val); 
@@ -82,7 +82,7 @@ void recvWithEndMarker() {
  }
 
 //////////////////// Commanding ////////////////////
- void commandSpeed(int intVal){ // Sets the desired speed from SBC
+ void commandSpeed(int intVal){ // Sets the desired speed from SBC ****needed to be developed****
   //Serial.println("commandspeed is being called");
   g_roboThrottle = intVal;
   //g_rcSteer = intVal;
@@ -93,16 +93,16 @@ void commandSteering(int intVal){ // Sets the desired steering from SBC
   g_roboSteer = intVal;
 }
 
+int commandThrottle(float intVal){
+  g_roboThrottle = intVal;
+}
 
 void commandShutdown(){
   Serial.print("Shut down!");
   //g_throttle = g_neutralPWM; //changes needed!!!!!!!!!!!!
-  
 }
 
-int commandThrottle(float intVal){    //, int maxForward, int neutral, int g_wideOpenReverse){
-  g_roboThrottle = intVal;
-}
+
 
 /////////////////// Sending /////////////////////////
 //Teensy send info to SBC

@@ -10,28 +10,28 @@
  *
  */
 
-int loopcount = 0;
+//int loopcount = 0;
 void loop() {
-
-loopcount++;
-Serial.print("Loopcount: \t");
-Serial.println(loopcount);
-
-if (loopcount < 20000){
- // the program is alive...for now.
-
-// use the following 4 lines to kick the dog
-    noInterrupts();
-    WDOG_REFRESH = 0xA602;
-    WDOG_REFRESH = 0xB480;
-    interrupts()
-
-}
+//
+//loopcount++;
+//Serial.print("Loopcount: \t");
+//Serial.println(loopcount);
+//
+//if (loopcount < 20000){
+// // the program is alive...for now.
+//
+//// use the following 4 lines to kick the dog
+//    noInterrupts();
+//    WDOG_REFRESH = 0xA602;
+//    WDOG_REFRESH = 0xB480;
+//    interrupts()
+//
+//}
 
 
 // if you don't refresh the watchdog timer before it runs out, the system will be rebooted
 
- // Get latest from SBC
+// Get latest from SBC
  recvWithEndMarker(); //receiving commands from SBC
  runFunction(); //process the command
 
@@ -73,8 +73,15 @@ switch (g_driveModeEnum) {
 ///////////////////////Write to Motors ////////////////////////////
   writeToServo(g_steering);
   writeToESC(g_throttle);//(g_neutralThrottle);
+
+
+  Serial.print("steering: ");
   Serial.println(g_steering);
+  Serial.print("throttle: ");
   Serial.println(g_throttle);
+  Serial.print("Drivemode: ");
   Serial.println(g_driveModeEnum);
+  Serial.print("===============\n");
+  delay(5000);
   
 }

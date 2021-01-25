@@ -5,7 +5,7 @@
 //KalmanFilter kalmanfilter;
 /////// RC Reciever Initializations ///////////
                                             ///
-
+//PWM values from RC controller
 int g_maxRcRange = 2000;
 int g_minRcRange = 1000;
 int g_neutralRC = 1500;
