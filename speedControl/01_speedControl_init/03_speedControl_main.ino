@@ -10,23 +10,35 @@
  *
  */
 
-//int loopcount = 0;
+int loopcount = 0;
+
+void WatchdogReset(){ //this just resets the watchdog every time it is called. The 5 in the watchdogTimer is not the amount of time. If you want the amout of time look in setup
+  static elapsedMillis watchdogTimer;  
+ 
+  if (watchdogTimer > 5){
+    watchdogTimer = 0;
+    
+    noInterrupts();
+    WDOG_REFRESH = 0xA602;
+    WDOG_REFRESH = 0xB480;
+    interrupts();
+  }
+}
+
+
 void loop() {
-//
-//loopcount++;
-//Serial.print("Loopcount: \t");
-//Serial.println(loopcount);
-//
-//if (loopcount < 20000){
-// // the program is alive...for now.
-//
-//// use the following 4 lines to kick the dog
-//    noInterrupts();
-//    WDOG_REFRESH = 0xA602;
-//    WDOG_REFRESH = 0xB480;
-//    interrupts()
-//
-//}
+
+WatchdogReset();
+if(heartbeat.justFinished()){
+  Serial.print("Heartbeat Lost");
+  g_driveModeEnum = eStop;
+  }
+
+loopcount++;
+Serial.print("Loopcount: \t");
+Serial.print(loopcount);
+Serial.print("\t remaining heartbeat \t");
+Serial.println(heartbeat.remaining());
 
 
 // if you don't refresh the watchdog timer before it runs out, the system will be rebooted
@@ -75,13 +87,13 @@ switch (g_driveModeEnum) {
   writeToESC(g_throttle);//(g_neutralThrottle);
 
 
-  Serial.print("steering: ");
-  Serial.println(g_steering);
-  Serial.print("throttle: ");
-  Serial.println(g_throttle);
-  Serial.print("Drivemode: ");
-  Serial.println(g_driveModeEnum);
-  Serial.print("===============\n");
-  delay(5000);
+//  Serial.print("steering: ");
+//  Serial.println(g_steering);
+//  Serial.print("throttle: ");
+//  Serial.println(g_throttle);
+//  Serial.print("Drivemode: ");
+//  Serial.println(g_driveModeEnum);
+//  Serial.print("===============\n");
+//  delay(5000);
   
 }

@@ -46,7 +46,6 @@ double effort = 0;
 
     // Mapping control effort to PWM range
     g_throttle = map(effort,g_minEffort,g_maxEffort,g_wideOpenReverse,g_wideOpenThrottle);
-    
 }
 
 

@@ -16,6 +16,8 @@ void recvWithEndMarker() {
    char rc;
    
    while (Serial.available() > 0 && newData == false) {
+     g_driveModeEnum = roboDrive;
+     heartbeat.start(heartbeatTimeoutInMilliseconds);
      rc = Serial.read();
      //Serial.print("inside recv");
      if(rc == splitMarker){
@@ -76,6 +78,7 @@ void recvWithEndMarker() {
       if(strcmp(receivedChars, "calMaxLeft") == 0)  calibration(&g_fullLeft, (int)val);
       if(strcmp(receivedChars, "calMaxRight") == 0)  calibration(&g_fullRight, (int)val);
       if(strcmp(receivedChars, "calNeutralSteering") == 0)  calibration(&g_steering, (int)val);
+      if(strcmp(receivedChars, "delay") == 0)  delay(val*1000);
       
    }
     newData = false;

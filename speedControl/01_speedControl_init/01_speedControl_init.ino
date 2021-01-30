@@ -136,6 +136,13 @@ boolean newData = false;
 //////////////////////////////////////
 
 
+//////////////////WATCHDOG ////////////
+
+#define watchdogTimeoutInMilliseconds 4000 ///4000 is equal to 4 seconds
+
+#define heartbeatTimeoutInMilliseconds 7000
+
+
 //double elapsedTime;
 
 ///
