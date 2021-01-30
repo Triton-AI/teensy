@@ -138,9 +138,9 @@ boolean newData = false;
 
 //////////////////WATCHDOG ////////////
 
-#define watchdogTimeoutInMilliseconds 4000 ///4000 is equal to 4 seconds
+#define watchdogTimeoutInMilliseconds 100 ///so 362 is equal to 0.362 seconds which is three times the 
 
-#define heartbeatTimeoutInMilliseconds 7000
+#define heartbeatTimeoutInMilliseconds 150 //so 0.15 seconds or 3 times the frequency of the framework sending messages to the Teensy 
 
 
 //double elapsedTime;
