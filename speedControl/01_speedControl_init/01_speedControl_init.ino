@@ -1,5 +1,7 @@
-#include "PWM.hpp"  // https://github.com/xkam1x/Arduino-PWM-Reader                   
+#include "PWM.hpp"  // https://github.com/xkam1x/Arduino-PWM-Reader
 #include <PID_v1.h> // https://github.com/br3ttb/Arduino-PID-Library
+//#include <avr/wdt.h>
+
 //#include <KalmanFilter.h>
 
 //KalmanFilter kalmanfilter;
@@ -86,12 +88,12 @@ double g_avgSpeed = 0;
 bool inReverse = false;
 
 
-////////////////Kalman_Filter//////////////////
-float Q_angle = 0.001, Q_gyro = 0.005;
-float R_angle = 0.5 , C_0 = 1;
-float timeChange = 5; //Filter sampling time interval (unit:milliseconds)
-float dt = timeChange * 0.001; //Note:The value of dt is the filter sampling time
-////////////////Kalman_Filter//////////////////
+//////////////////Kalman_Filter//////////////////
+//float Q_angle = 0.001, Q_gyro = 0.005;
+//float R_angle = 0.5 , C_0 = 1;
+//float timeChange = 5; //Filter sampling time interval (unit:milliseconds)
+//float dt = timeChange * 0.001; //Note:The value of dt is the filter sampling time
+//////////////////Kalman_Filter//////////////////
 
 ///// Speed Controller Initializations ////////
                                             ///
@@ -141,7 +143,7 @@ boolean newData = false;
 
 #define watchdogTimeoutInMilliseconds 150 ///so 150 is .015 seconds which is larger than the max itteration expected (120 miliseconds) and way larger than 3times the average itteration time (140 microseconds)
 
-#define heartbeatTimeoutInMilliseconds 150 //so 0.15 seconds or 3 times the frequency of the framework sending messages to the Teensy 
+#define heartbeatTimeoutInMilliseconds 150 //so 0.15 seconds or 3 times the frequency of the framework sending messages to the Teensy
 
 
 //double elapsedTime;
