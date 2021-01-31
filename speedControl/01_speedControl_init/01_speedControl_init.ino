@@ -1,5 +1,7 @@
 #include "PWM.hpp"  // https://github.com/xkam1x/Arduino-PWM-Reader                   
 #include <PID_v1.h> // https://github.com/br3ttb/Arduino-PID-Library
+//#include <avr/wdt.h>
+
 //#include <KalmanFilter.h>
 
 //KalmanFilter kalmanfilter;
@@ -86,12 +88,12 @@ double g_avgSpeed = 0;
 bool inReverse = false;
 
 
-////////////////Kalman_Filter//////////////////
-float Q_angle = 0.001, Q_gyro = 0.005;
-float R_angle = 0.5 , C_0 = 1;
-float timeChange = 5; //Filter sampling time interval (unit:milliseconds)
-float dt = timeChange * 0.001; //Note:The value of dt is the filter sampling time
-////////////////Kalman_Filter//////////////////
+//////////////////Kalman_Filter//////////////////
+//float Q_angle = 0.001, Q_gyro = 0.005;
+//float R_angle = 0.5 , C_0 = 1;
+//float timeChange = 5; //Filter sampling time interval (unit:milliseconds)
+//float dt = timeChange * 0.001; //Note:The value of dt is the filter sampling time
+//////////////////Kalman_Filter//////////////////
 
 ///// Speed Controller Initializations ////////
                                             ///
@@ -138,9 +140,9 @@ boolean newData = false;
 
 //////////////////WATCHDOG ////////////
 
-#define watchdogTimeoutInMilliseconds 4000 ///4000 is equal to 4 seconds
+#define watchdogTimeoutInMilliseconds 362 // 3*120 (120ms is the time for 1 loop in teensy) -- low level watchdog 
 
-#define heartbeatTimeoutInMilliseconds 7000
+#define heartbeatTimeoutInMilliseconds 150// 3 times a frequency of the donkeycar framework. high-level watchdog (from SBC to Teensy)
 
 
 //double elapsedTime;

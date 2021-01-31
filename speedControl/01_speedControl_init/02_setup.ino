@@ -1,14 +1,12 @@
 #include <millisDelay.h>
 millisDelay heartbeat;
 
-
 void setup() {
   pinMode(13, OUTPUT);
   digitalWrite(13,HIGH);
   delay(500);
   digitalWrite(13,LOW);
 
-  
   
   Serial.begin(115200); 
   pinMode(pinA, INPUT_PULLUP);   // configure the I.0 as a INPUTS

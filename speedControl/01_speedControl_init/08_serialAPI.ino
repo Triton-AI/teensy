@@ -15,9 +15,9 @@ void recvWithEndMarker() {
    int splitFound = 0;
    char rc;
    
-   while (Serial.available() > 0 && newData == false) {
+   while (Serial.available() > 0 && newData == false) { //when a message comes in from SBC
      g_driveModeEnum = roboDrive;
-     heartbeat.start(heartbeatTimeoutInMilliseconds);
+     heartbeat.start(heartbeatTimeoutInMilliseconds); // This restarts the heartbeat watchdog timer whenever a message is recieved from the serial.
      rc = Serial.read();
      //Serial.print("inside recv");
      if(rc == splitMarker){
