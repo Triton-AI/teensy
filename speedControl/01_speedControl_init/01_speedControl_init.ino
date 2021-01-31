@@ -1,4 +1,4 @@
-#include "PWM.hpp"  // https://github.com/xkam1x/Arduino-PWM-Reader                   
+#include "PWM.hpp"  // https://github.com/xkam1x/Arduino-PWM-Reader
 #include <PID_v1.h> // https://github.com/br3ttb/Arduino-PID-Library
 //#include <avr/wdt.h>
 
@@ -140,9 +140,9 @@ boolean newData = false;
 
 //////////////////WATCHDOG ////////////
 
-#define watchdogTimeoutInMilliseconds 362 // 3*120 (120ms is the time for 1 loop in teensy) -- low level watchdog 
+#define watchdogTimeoutInMilliseconds 150 ///so 150 is .015 seconds which is larger than the max itteration expected and way larger than 3times the average itteration time 140 microseconds
 
-#define heartbeatTimeoutInMilliseconds 150// 3 times a frequency of the donkeycar framework. high-level watchdog (from SBC to Teensy)
+#define heartbeatTimeoutInMilliseconds 150 //so 0.15 seconds or 3 times the frequency of the framework sending messages to the Teensy
 
 
 //double elapsedTime;
