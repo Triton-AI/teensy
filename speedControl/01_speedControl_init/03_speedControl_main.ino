@@ -18,7 +18,7 @@ void WatchdogReset(){ //this just resets the watchdog every time it is called. T
  
   if (watchdogTimer > 5){ //The 5 in the watchdogTimer is not the amount of time. If you want the amout of time look in 01_speedControl_init
     watchdogTimer = 0;
-
+    
     noInterrupts();
     WDOG_REFRESH = 0xA602;
     WDOG_REFRESH = 0xB480;
@@ -111,6 +111,5 @@ if(timeElapse> timeMax){
   }
 Serial.print(timeMax);
 Serial.print("\t");
-Serial.println((micros()-setupCompleteTime)/loopcount);
-
+  
 }
