@@ -138,7 +138,7 @@ boolean newData = false;
 
 //////////////////WATCHDOG ////////////
 
-#define watchdogTimeoutInMilliseconds 100 ///so 362 is equal to 0.362 seconds which is three times the 
+#define watchdogTimeoutInMilliseconds 150 ///so 150 is .015 seconds which is larger than the max itteration expected and way larger than 3times the average itteration time 140 microseconds
 
 #define heartbeatTimeoutInMilliseconds 150 //so 0.15 seconds or 3 times the frequency of the framework sending messages to the Teensy 
 
