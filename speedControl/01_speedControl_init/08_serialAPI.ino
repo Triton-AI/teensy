@@ -14,6 +14,12 @@ void recvWithEndMarker() {
    char splitMarker = SPLIT_MARKER;
    int splitFound = 0;
    char rc;
+
+   // This function activates whenever a message is sent to arduino over the serial. 
+   //Each message is processed such that the endMarker marks the end of a message (ARDUINO IDE SERIAL MONITER assumes this will be the new line char "\n" so that should be used if using Arduino Serial Moniter
+   // if the incoming character rc is equal to the splitMarker, splitFound will be set to 1 which will send all remaining chars to the recievedNums[] array 
+   //everythin befroe will be sent to the receivedChars[] array
+   // for example "myVarName_##\n" will change receivedChars[] to be "myVarName" and receivedNums[] to be "##" (where ## is any length number that can be converted from string to float with atof(##)
    
    while (Serial.available() > 0 && newData == false) {
      g_driveModeEnum = roboDrive; // If the SBC talks to the arduino, we assume that it is going to be controlling the Arduino
@@ -78,7 +84,8 @@ void recvWithEndMarker() {
       if(strcmp(receivedChars, "calMaxLeft") == 0)  calibration(&g_fullLeft, (int)val);
       if(strcmp(receivedChars, "calMaxRight") == 0)  calibration(&g_fullRight, (int)val);
       if(strcmp(receivedChars, "calNeutralSteering") == 0)  calibration(&g_steering, (int)val);
-      if(strcmp(receivedChars, "delay") == 0)  delay(val*1000);
+      //Commands from JTN
+      if(strcmp(receivedChars, "delay") == 0)  delay(val*1000); // dealys for val seconds; for example if "delay_2" is recieved over serial, the teensy will delay for 2 seconds
       
    }
     newData = false;
