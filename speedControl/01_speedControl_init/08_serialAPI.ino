@@ -86,7 +86,7 @@ void recvWithEndMarker() {
       if(strcmp(receivedChars, "calNeutralSteering") == 0)  calibration(&g_steering, (int)val);
       //Commands from JTN
       if(strcmp(receivedChars, "delay") == 0)  delay(val*1000); // dealys for val seconds; for example if "delay_2" is recieved over serial, the teensy will delay for 2 seconds
-      
+      if(strcmp(recievedChars, "driveMode")==0) calibration(&g_driveModeEnum, (int)val);
    }
     newData = false;
  }
