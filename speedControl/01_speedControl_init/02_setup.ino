@@ -1,6 +1,5 @@
 #include <millisDelay.h>
 millisDelay heartbeat;
-int setupCompleteTime = 0;
 
 void setup() {
   pinMode(13, OUTPUT);
@@ -54,5 +53,4 @@ WDOG_TOVALL = watchdogTimeoutInMilliseconds; // The next 2 lines sets the time-o
 WDOG_TOVALH = 0;
 WDOG_PRESC = 0; // This sets prescale clock so that the watchdog timer ticks at 1kHZ instead of the default 1kHZ/4 = 200 HZ
 
-setupCompleteTime = micros();
 }

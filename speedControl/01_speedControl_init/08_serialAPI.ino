@@ -11,14 +11,14 @@
 void recvWithEndMarker() {
    static byte ndx = 0;
    char endMarker = '\n';
-   char splitMarker = '_';
+   char splitMarker = SPLIT_MARKER;
    int splitFound = 0;
    char rc;
    
    while (Serial.available() > 0 && newData == false) {
-     g_driveModeEnum = roboDrive;
+     g_driveModeEnum = roboDrive; // If the SBC talks to the arduino, we assume that it is going to be controlling the Arduino
      heartbeat.start(heartbeatTimeoutInMilliseconds); // This  restarts the heartbeat watchdog timer whenever a message is recieved from the serial
-     rc = Serial.read();
+     rc = Serial.read(); // rc stands for recieved char
      //Serial.print("inside recv");
      if(rc == splitMarker){
           receivedChars[ndx] = '\0'; // terminate the string

@@ -133,12 +133,13 @@ const byte numChars = 32;
 char receivedChars[numChars]; // an array to store the received data
 char receivedNums[numChars];
 boolean newData = false;
+# define SPLIT_MARKER '_'
 //////////////////////////////////////
 
 
 //////////////////WATCHDOG ////////////
 
-#define watchdogTimeoutInMilliseconds 150 ///so 150 is .015 seconds which is larger than the max itteration expected and way larger than 3times the average itteration time 140 microseconds
+#define watchdogTimeoutInMilliseconds 150 ///so 150 is .015 seconds which is larger than the max itteration expected (120 miliseconds) and way larger than 3times the average itteration time (140 microseconds)
 
 #define heartbeatTimeoutInMilliseconds 150 //so 0.15 seconds or 3 times the frequency of the framework sending messages to the Teensy 
 

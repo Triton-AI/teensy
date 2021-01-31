@@ -16,7 +16,7 @@ int timeMax = 0;
 void WatchdogReset(){ //this just resets the watchdog every time it is called. The 5 in the watchdogTimer is not the amount of time. If you want the amout of time look in 01_speedControl_init
   static elapsedMillis watchdogTimer;  
  
-  if (watchdogTimer > 5){
+  if (watchdogTimer > 5){ //The 5 in the watchdogTimer is not the amount of time. If you want the amout of time look in 01_speedControl_init
     watchdogTimer = 0;
     
     noInterrupts();
