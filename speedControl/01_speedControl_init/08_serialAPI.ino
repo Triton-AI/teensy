@@ -1,24 +1,24 @@
 /*
  * recvWithEndMarker()
  *  * Read serial stream, using a \0 to indicate breaks in strings
- *
+ * 
  * runFunction()
  *  *  Maps input commands to functions
- *
- *
+ * 
+ * 
  */
 
 void recvWithEndMarker() {
    static byte ndx = 0;
-   char endMarker = '\n';
+   char endMarker = END_MARKER;
    char splitMarker = SPLIT_MARKER;
    int splitFound = 0;
    char rc;
    
-   while (Serial.available() > 0 && newData == false) {//when a message comes in from SBC
+   while (Serial.available() > 0 && newData == false) {
      g_driveModeEnum = roboDrive; // If the SBC talks to the arduino, we assume that it is going to be controlling the Arduino
      heartbeat.start(heartbeatTimeoutInMilliseconds); // This  restarts the heartbeat watchdog timer whenever a message is recieved from the serial
-     rc = Serial.read(); // rc stands for recieved char
+     rc = Serial.read(); // rc stands for recieved char because Serial.read() only reads one char at a time
      //Serial.print("inside recv");
      if(rc == splitMarker){
           receivedChars[ndx] = '\0'; // terminate the string
@@ -31,7 +31,7 @@ void recvWithEndMarker() {
        }
        else{
           receivedNums[ndx] = rc;
-       }
+       }       
        ndx++;
        if (ndx >= numChars) {
          ndx = numChars - 1;
@@ -39,7 +39,7 @@ void recvWithEndMarker() {
      }
      else {
         if(splitFound == 0){
-            receivedChars[ndx] = '\0'; // terminate the string
+            receivedChars[ndx] = '\0'; // terminate the string 
         }
         else{
             receivedNums[ndx] = '\0'; // terminate the string
@@ -61,10 +61,10 @@ void recvWithEndMarker() {
      //JTN sends commands to Teensy during robomode
       if(strcmp(receivedChars, "commandSpeed") == 0) commandSpeed((int)val);
       if(strcmp(receivedChars, "commandSteering") == 0) commandSteering((int)val);
-      if(strcmp(receivedChars, "commandThrottle") == 0) commandThrottle((int)val);
+      if(strcmp(receivedChars, "commandThrottle") == 0) commandThrottle((int)val); 
       if(strcmp(receivedChars, "commandShutdown") == 0) commandShutdown();
-
-     //Teensy send data back to JTN??????????????????????????????????????
+      
+     //Teensy send data back to JTN?????????????????????????????????????? 
 //      if(strcmp(receivedChars, "sendSpeed") == 0) sendSpeed();
 //      if(strcmp(receivedChars, "sendThrottle") == 0)  sendThrottle();
 //      if(strcmp(receivedChars, "sendSteering") == 0)  sendSteering();
@@ -79,7 +79,7 @@ void recvWithEndMarker() {
       if(strcmp(receivedChars, "calMaxRight") == 0)  calibration(&g_fullRight, (int)val);
       if(strcmp(receivedChars, "calNeutralSteering") == 0)  calibration(&g_steering, (int)val);
       if(strcmp(receivedChars, "delay") == 0)  delay(val*1000);
-
+      
    }
     newData = false;
  }
@@ -141,7 +141,7 @@ void sendAll(){
   sendThrottle();
   sendMode();
   sendSpeed();
-
+  
 }
 
 //////////////// Calibrating /////////////////////
@@ -156,7 +156,7 @@ JTN: “calNeutralSteering_400\n”
 */
 //void calMaxForward(int *g_wideOpenThrottle, int newMaxThrottleForward){
 //  *g_wideOpenThrottle = newMaxThrottleForward;
-//
+//  
 //}
 //void calMaxReverse(int *g_wideOpenReverse, int newMaxThrottleReverse){
 //  *g_wideOpenReverse = newMaxThrottleReverse;
@@ -185,5 +185,5 @@ void calibration(int *toCalibrate, int val){
     JTN: “trySteering_350\n
 */
 //void tryThrottle_400(){
-//
+//    
 //}
