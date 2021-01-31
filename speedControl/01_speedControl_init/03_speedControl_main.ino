@@ -9,7 +9,6 @@
  *   * Send commands to motors
  *
  */
-
 int loopcount = 0;
 int timeMax = 0;
 

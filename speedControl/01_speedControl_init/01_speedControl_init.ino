@@ -11,9 +11,9 @@ int g_minRcRange = 1000;
 int g_neutralRC = 1500;
 
 enum driveMode {
-  rcDrive,
-  roboDrive,
-  eStop
+  rcDrive,     //human drive mode
+  roboDrive,   //autonomous mode
+  eStop        //emergency stop
 };
 
 const int steeringPin = 7;
@@ -45,7 +45,7 @@ int g_fullLeft = 180;
 
 
 /////// Servo & ESC Initializations ///////////
-                                            ///
+///
 #include <Servo.h>
 
 const int servoPin = 5;
@@ -84,14 +84,18 @@ float omegaAvg = 0;
 float encoderSpeed = 0;
 double g_avgSpeed = 0;
 bool inReverse = false;
-
+                                            ///
+/////// End Speedometer Initializations ///////
 
 ////////////////Kalman_Filter//////////////////
+                                            ///
 float Q_angle = 0.001, Q_gyro = 0.005;
 float R_angle = 0.5 , C_0 = 1;
 float timeChange = 5; //Filter sampling time interval (unit:milliseconds)
 float dt = timeChange * 0.001; //Note:The value of dt is the filter sampling time
-////////////////Kalman_Filter//////////////////
+
+                                            ///
+///////////// End Kalman_Filter////////////////
 
 ///// Speed Controller Initializations ////////
                                             ///
@@ -118,8 +122,6 @@ double lastError = 0;  //last error of speed
 double cumError = 0;   //sum error of speed
 double rateError = 0;  //rate of change of error
 
-
-
 double effortPID = 0;
 double g_maxEffort = g_max_Speed;     // previously defined in ticks/s
 double g_minEffort = g_min_Speed;     // previously defined in ticks/s
@@ -128,23 +130,27 @@ double currentTime, previousTime;
 
 byte i = 0;                       // Smoothing index
 
-/////////////// Serial API ///////////
+/////////////// Serial API ////////////////////
+                                            ///
 const byte numChars = 32;
 char receivedChars[numChars]; // an array to store the received data
 char receivedNums[numChars];
 boolean newData = false;
 # define SPLIT_MARKER '_'
 # define END_MARKER '\n'
-//////////////////////////////////////
+                                            ///
+////////////// End Serial API /////////////////
 
 
-//////////////////WATCHDOG ////////////
+////////////////// WATCHDOG ///////////////////
+                                            ///
 
 #define watchdogTimeoutInMilliseconds 150 ///so 150 is .015 seconds which is larger than the max itteration expected (120 miliseconds) and way larger than 3times the average itteration time (140 microseconds)
 
 #define heartbeatTimeoutInMilliseconds 150 //so 0.15 seconds or 3 times the frequency of the framework sending messages to the Teensy 
+                                            
+                                            ///
+/////////////// End WATCHDOG //////////////////
 
 
 //double elapsedTime;
-
-///

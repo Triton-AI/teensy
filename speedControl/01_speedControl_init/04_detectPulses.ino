@@ -6,7 +6,6 @@
  * 
  * 
   */
-
 void detectAPulses() {
   if (digitalRead(pinB) == HIGH) { //Confirm if we are moving forward
      inReverse = false;
