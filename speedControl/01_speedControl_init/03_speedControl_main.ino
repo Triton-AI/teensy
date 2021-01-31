@@ -9,7 +9,6 @@
  *   * Send commands to motors
  *
  */
-
 int loopcount = 0;
 int timeMax = 0;
 
@@ -111,6 +110,6 @@ if(timeElapse> timeMax){
   }
 Serial.print(timeMax);
 Serial.print("\t");
-Serial.println((micros()-setupCompleteTime)/loopcount);
+
 
 }

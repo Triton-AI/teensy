@@ -4,8 +4,6 @@
  *    * Calculate average of 3 vehicle speeds
  * 
  */
-
-
 void calcSpeed() {
  //////////////////////////////////////////////////////////////
     // Measuring period

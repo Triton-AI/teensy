@@ -7,7 +7,6 @@
  * 
  * 
  */
-
 void recvWithEndMarker() {
    static byte ndx = 0;
    char endMarker = END_MARKER;

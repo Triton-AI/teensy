@@ -11,8 +11,6 @@
  *      * Steering position
  * 
  */
-
-
 // Dependencies:
 /*
  * g_Input
