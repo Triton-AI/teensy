@@ -64,10 +64,10 @@ void recvWithEndMarker() {
       float val = atof(receivedNums); // -1, 1; ,convert string to int or float
 
      //JTN sends commands to Teensy during robomode
-      if(strcmp(receivedChars, "commandSpeed") == 0) commandSpeed((int)val);
-      if(strcmp(receivedChars, "commandSteering") == 0) commandSteering((int)val);
-      if(strcmp(receivedChars, "commandThrottle") == 0) commandThrottle((int)val); 
-      if(strcmp(receivedChars, "commandShutdown") == 0) commandShutdown();
+      if(strcmp(receivedChars, "commandSpeed") == 0) g_roboThrottle = (int)val;
+      if(strcmp(receivedChars, "commandSteering") == 0) g_roboSteer = (int)val;
+      if(strcmp(receivedChars, "commandThrottle") == 0) g_roboThrottle = (int)val; 
+      if(strcmp(receivedChars, "commandShutdown") == 0) g_driveModeEnum = eStop;
       
      //Teensy send data back to JTN?????????????????????????????????????? 
 //      if(strcmp(receivedChars, "sendSpeed") == 0) sendSpeed();
@@ -77,41 +77,18 @@ void recvWithEndMarker() {
 //      if(strcmp(receivedChars, "sendAll") == 0)  sendAll();
 
      //Calibration from JTN
-      if(strcmp(receivedChars, "calMaxForward") == 0)  calibration(&g_wideOpenThrottle, (int)val);
-      if(strcmp(receivedChars, "calMaxReverse") == 0)  calibration(&g_wideOpenReverse, (int)val);
-      if(strcmp(receivedChars, "calNeutralThrottle") == 0)  calibration(&g_neutralThrottle, (int)val);
-      if(strcmp(receivedChars, "calMaxLeft") == 0)  calibration(&g_fullLeft, (int)val);
-      if(strcmp(receivedChars, "calMaxRight") == 0)  calibration(&g_fullRight, (int)val);
-      if(strcmp(receivedChars, "calNeutralSteering") == 0)  calibration(&g_steering, (int)val);
+      if(strcmp(receivedChars, "calMaxForward") == 0)  g_wideOpenThrottle = (int)val;
+      if(strcmp(receivedChars, "calMaxReverse") == 0)  g_wideOpenReverse = (int)val;
+      if(strcmp(receivedChars, "calNeutralThrottle") == 0)  g_neutralThrottle = (int)val;
+      if(strcmp(receivedChars, "calMaxLeft") == 0)  g_fullLeft = (int)val;
+      if(strcmp(receivedChars, "calMaxRight") == 0)  g_fullRight = (int)val;
+      if(strcmp(receivedChars, "calNeutralSteering") == 0)  g_steering = (int)val;
       //Commands from JTN
       if(strcmp(receivedChars, "delay") == 0)  delay(val*1000); // dealys for val seconds; for example if "delay_2" is recieved over serial, the teensy will delay for 2 seconds
-      //if(strcmp(receivedChars, "driveMode")==0) calibration(&g_driveModeEnum, val);
+      if(strcmp(receivedChars, "driveMode")==0) g_driveModeEnum = (int)val;
    }
     newData = false;
  }
-
-//////////////////// Commanding ////////////////////
- void commandSpeed(int intVal){ // Sets the desired speed from SBC ****needed to be developed****
-  //Serial.println("commandspeed is being called");
-  g_roboThrottle = intVal;
-  //g_rcSteer = intVal;
-}
-
-
-void commandSteering(int intVal){ // Sets the desired steering from SBC
-  g_roboSteer = intVal;
-}
-
-int commandThrottle(float intVal){
-  g_roboThrottle = intVal;
-}
-
-void commandShutdown(){
-  Serial.print("Shut down!");
-  //g_throttle = g_neutralPWM; //changes needed!!!!!!!!!!!!
-}
-
-
 
 /////////////////// Sending /////////////////////////
 //Teensy send info to SBC
@@ -160,26 +137,7 @@ JTN: “calMaxLeft_300\n”
 JTN: “calMaxRight_500\n”
 JTN: “calNeutralSteering_400\n”
 */
-//void calMaxForward(int *g_wideOpenThrottle, int newMaxThrottleForward){
-//  *g_wideOpenThrottle = newMaxThrottleForward;
-//  
-//}
-//void calMaxReverse(int *g_wideOpenReverse, int newMaxThrottleReverse){
-//  *g_wideOpenReverse = newMaxThrottleReverse;
-//}
-//void calNeutralThrottle(int *g_neutralPWM, int newNeutralThrottle){
-//  *g_neutralPWM = newNeutralThrottle;
-//}
-//void calMaxLeft(int *g_fullLeft, int newFullLeft){
-//  *g_fullLeft = newFullLeft;
-//}
-//void calMaxRight(int *g_fullRight, int newFullRight){
-//  *g_fullRight = newFullRight;
-//}
-//void calNeutralSteering(int *g_steering, int newNeutralSteering){
-//  //*g_steering = newNeutralSteering;
-//}
-//
+
 void calibration(int *toCalibrate, int val){
   Serial.print("calibrating");
   *toCalibrate = val;
