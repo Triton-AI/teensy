@@ -60,7 +60,7 @@ void recvWithEndMarker() {
 
  void runFunction(){
    if (newData == true) {
-      //Serial.print(receivedChars);
+      Serial.print(receivedChars);
       float val = atof(receivedNums); // -1, 1; ,convert string to int or float
 
      //JTN sends commands to Teensy during robomode
@@ -84,7 +84,10 @@ void recvWithEndMarker() {
       if(strcmp(receivedChars, "calMaxRight") == 0)  g_fullRight = (int)val;
       if(strcmp(receivedChars, "calNeutralSteering") == 0)  g_steering = (int)val;
       //Commands from JTN
-      if(strcmp(receivedChars, "delay") == 0)  delay(val*1000); // dealys for val seconds; for example if "delay_2" is recieved over serial, the teensy will delay for 2 seconds
+      if(strcmp(receivedChars, "delay") == 0){  
+      delay((int)val*1000); // dealys for val seconds; for example if "delay_2" is recieved over serial, the teensy will delay for 2 seconds
+      Serial.println("delaying");
+      }
       if(strcmp(receivedChars, "driveMode")==0) g_driveModeEnum = (int)val;
    }
     newData = false;

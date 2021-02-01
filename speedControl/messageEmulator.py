@@ -1,50 +1,20 @@
-# 
-# while(True):
-#     ser.write(b'a\n')
-#     while(ser.in_waiting):
-#         print (ser.readline().split())
-#         ser.write(b'a\n')
-
 import serial
-ser = serial.Serial('COM3', 9600, timeout=0.050)
 import pygame as pg
-import sys
-from pygame.locals import *
 
-
+ser = serial.Serial("COM3",115200)
 pg.init()
-BLACK  = (0, 0,0)
-WHITE  = (255, 255, 255)
-RED    = (255, 0, 0)
-YELLOW = (255, 255, 0)
-BLUE   = (0,0,255)
-GREEN = (0,255,0)
+screen = pg.display.set_mode((875, 325))
 COLOR_INACTIVE = pg.Color('lightskyblue3')
 COLOR_ACTIVE = pg.Color('dodgerblue2')
-FONT = pg.font.Font(None, 20)
-DISPLAYSURF = pg.display.set_mode((900,325), RESIZABLE)
-DISPLAYSURF.fill(WHITE)
+fsize = 18
+FONT = pg.font.Font(None, fsize)
+lineEnding = "\n"
 
-# Data Definition
-class window:
-    def __init__(self,width,height):
-        pg.init()
-        self.width = width
-        self.height = height
-        DISPLAYSURF = pg.display.set_mode((self.width,self.height), RESIZABLE)
-        DISPLAYSURF.fill(WHITE)
-
-    def CreateWindow(self,width,height):
-        '''Updates the window width and height '''
-        self.width = width
-        self.height = height
-        pg.display.set_caption("Press ESC to quit")
-        DISPLAYSURF = pg.display.set_mode((width,height),RESIZABLE)
-        DISPLAYSURF.fill(WHITE)
 
 class InputBox:
 
     def __init__(self, x, y, w, h, text=''):
+        self.lines = []
         self.rect = pg.Rect(x, y, w, h)
         self.color = COLOR_INACTIVE
         self.text = text
@@ -64,104 +34,72 @@ class InputBox:
         if event.type == pg.KEYDOWN:
             if self.active:
                 if event.key == pg.K_RETURN:
+                    ser.write(self.text.encode()+lineEnding.encode())
                     print(self.text)
+                    textCoppy = self.text
                     self.text = ''
-                    return self.text
+                    self.update()
+                    return textCoppy
                 elif event.key == pg.K_BACKSPACE:
                     self.text = self.text[:-1]
                 else:
                     self.text += event.unicode
-                # Re-render the text.
-                self.txt_surface = FONT.render(self.text, True, self.color)
+        return 
 
-    def update(self,window,x):
-        # Resize the box if the text is too long.
-        self.rect.w = window.width/2
-        self.rect.x = x
-
-    def draw(self, screen):
-        # Blit the text.
-        screen.blit(self.txt_surface, (self.rect.x+5, self.rect.y+5))
-        # Blit the rect.
-        pg.draw.rect(screen, self.color, self.rect, 2)
-
-class DisplayBox:
-
-    def __init__(self, x, y, w, h, text=""):
-        self.rect = pg.Rect(x, y, w, h)
-        self.color = COLOR_INACTIVE
-        self.text = text
-        self.txt_surface = FONT.render(text, True, self.color)
-        self.active = False
-
-    def handle_event(self, event):
+    def update(self):
         pass
 
-    def update(self,window,x,y,slide=0,text=""):
-        # Resize the box if the text is too long.
-        self.rect.w = window.width/2
-        self.rect.x = x
-        self.rect.y = y
-        
-
     def draw(self, screen):
-        #render the text
-        self.txt_surface = FONT.render(self.text, True, self.color)
         # Blit the text.
-        screen.blit(self.txt_surface, (self.rect.x+5, self.rect.y+5))
+        lines = self.text.splitlines()
+        for i, l in enumerate(lines):
+            screen.blit(FONT.render(l, 0, self.color), (self.rect.x+5, self.rect.y+5+ fsize*i))
+        lines = [value for value in self.lines if value != ""]
+        for i, l in enumerate(lines):
+            screen.blit(FONT.render(l, 0, self.color), (self.rect.x+5, self.rect.y+5+ fsize*i))
         # Blit the rect.
         pg.draw.rect(screen, self.color, self.rect, 2)
-
-# pg.init()
-# screen = pg.display.set_mode((640, 480))
-
 
 
 
 def main():
+    splitVal = 600
     clock = pg.time.Clock()
-    window1 = window(875,325)
-    input_box1 = InputBox(5, 5, window1.width/2, 32)
-    input_box2 = InputBox(window1.width/2, 5, window1.width/2, 32)
-    display_box1 = DisplayBox(5, 5, window1.width/2, 32)
-    display_box2 = DisplayBox(window1.width/2, 5, window1.width/2, 32, "thiolj\nklsjdflkj\n")
-    boxes = [input_box1, input_box2,display_box1,display_box2]
+    input_box1 = InputBox(5, 5, 865, fsize)
+    input_box2 = InputBox(5,fsize+10, splitVal, 325-fsize*2)
+    input_box3 = InputBox(splitVal+5,fsize+10, 865-splitVal, 325-fsize*2)
+    input_boxes = [input_box1, input_box2, input_box3]
     done = False
-
+    textBuff = ''
+    strs = ["" for x in range(16)]
     while not done:
-        DISPLAYSURF.fill(WHITE)
-        
-            
+        if(ser.in_waiting):
+            for i in range(len(strs)-1):
+                strs[i] = strs[i+1]
+            strs[len(strs)-1] = ser.readline().decode('UTF8')
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 done = True
-            elif event.type == VIDEORESIZE:
-                    window1.CreateWindow(event.w,event.h)
-            pg.display.update()
-
-            input_box1.handle_event(event)
+            text = input_box1.handle_event(event)
             input_box2.handle_event(event)
+            input_box3.handle_event(event)
 
-
-        input_box1.update(window1,0)
-        input_box2.update(window1,window1.width/2)
-
-        display_box1.update(window1,0,100)
-        display_box2.update(window1,window1.width/2,100)
-        text = ser.readline().decode("utf-8").split('\n')[0]
-        if(len(text)>1):
-            display_box1.text = display_box1.text+text
-        else:
-            display_box1.text = text
         
+        if(text!= None):
+            print("receiving", text)
+            input_box3.text = text
+            input_box3.update()
 
-        for box in boxes:
-            box.draw(DISPLAYSURF)
+        input_box2.lines = strs
+
+        screen.fill((30, 30, 30))
+        for box in input_boxes:
+            box.draw(screen)
 
         pg.display.flip()
         clock.tick(30)
 
+
 if __name__ == '__main__':
     main()
     pg.quit()
-    sys.exit()
