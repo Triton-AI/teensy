@@ -32,23 +32,18 @@ int startTime = micros();
 //This resets the Teensy's internal watchdog. If the watchdog is not reset for longer than 3times the normal loop time it will set the mode to estop
 WatchdogReset();                        // lowlevel watchdog
 
-//This resets the Teensy's hearbeet timer. If the heartbeat is not "detected" for longer than 3times the normal expected time to recieve a message it will set the mode to estop
-                                        // heartbeat watchdog
-if(heartbeat.justFinished()){ // if the timer set in 08_serialAPI runs out, this function will be triggered
-  Serial.print("Heartbeat Lost");
-  g_driveModeEnum = eStop; // sets the drivemode to eStop;
-  }
+
 
 
 // loopcount and heartbeat.remaining() are printed as test variables to check if the watchdogs are both working properly. To test the lowlevel watchdog, you can have the main loop delay for
 // a given amount of time by sending "delay_X" over serial (where X is the delay time in seconds)  This function can be found in 08_serialAPI
 loopcount++;
-//Serial.print("Loopcount: \t");
-//Serial.print(loopcount);
-//Serial.print("\t remaining heartbeat \t");
-//Serial.print(heartbeat.remaining());
-//Serial.print("\t driveMode \t");
-//Serial.println(g_driveModeEnum);
+Serial.print("Loopcount: \t");
+Serial.print(loopcount);
+Serial.print("\t remaining heartbeat \t");
+Serial.print(heartbeat.remaining());
+Serial.print("\t driveMode \t");
+Serial.println(g_driveModeEnum);
 
 // if you don't refresh the watchdog timer before it runs out, the system will be rebooted
 
@@ -68,6 +63,7 @@ loopcount++;
 
 /////////////////// Determining Drive Mode ///////////////////////
 
+bool inRange = 0;
 switch (g_driveModeEnum) {
   case rcDrive:
     pidControl(g_rcThrottle); // This maps g_rcThrottle to update g_throttle & probably don't need to have pidControl***************************
@@ -75,21 +71,36 @@ switch (g_driveModeEnum) {
     sendSpeed();   //<============================================================= do we need the argument for these 3 send functions? locations?
     sendThrottle();
     sendSteering();
+    inRange = 1;
     break;
 
   case roboDrive:
+    //heartbeat watchdog// resets the Teensy's hearbeet timer. If the heartbeat is not "detected" for longer than 3times the normal expected time to recieve a message it will set the mode to estop
+    if(heartbeat.justFinished()){ // if the timer set in 08_serialAPI runs out, this function will be triggered
+      Serial.print("Heartbeat Lost");
+      g_driveModeEnum = eStop; // sets the drivemode to eStop;
+      }
+    digitalWrite(13,HIGH);
+    digitalWrite(13,LOW);
     pidControl(g_roboThrottle);  // This maps g_roboThrottle to update g_throttle
     steeringControl(g_roboSteer); //This maps g_roboSteer to update g_steering
     sendSpeed();                 //print current speed
     sendThrottle();              //print throttle
     sendSteering();              //print steering
+    inRange = 1;
     break;
 
   case eStop:
     g_throttle = g_neutralThrottle;
     steeringControl(g_rcSteer); //This maps g_rcSteer to update g_steering
+    inRange = 1;
 
 } // end switch case
+if(inRange ==0){
+  g_driveModeEnum = eStop;
+  Serial.println("driveMode out of range, going to estop");
+}
+  
 
 ///////////////////////Write to Motors ////////////////////////////
   writeToServo(g_steering);
