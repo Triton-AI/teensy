@@ -2,6 +2,11 @@
 #include <PID_v1.h> // https://github.com/br3ttb/Arduino-PID-Library
 //#include <KalmanFilter.h>
 
+
+///// Teensy Version number////////
+float TEENSY_VERSION = 4.0;
+//
+
 //KalmanFilter kalmanfilter;
 /////// RC Reciever Initializations ///////////
                                             ///
@@ -145,7 +150,7 @@ boolean newData = false;
 ////////////////// WATCHDOG ///////////////////
                                             ///
 
-#define watchdogTimeoutInMilliseconds 200 ///so 150 is .015 seconds which is larger than the max itteration expected (120 miliseconds) and way larger than 3times the average itteration time (140 microseconds)
+#define watchdogTimeoutInMilliseconds 200 ///so 150 is .015 seconds which is larger than the max iteration expected (120 milliseconds) and way larger than 3 times the average iteration time (140 microseconds)
 
 #define heartbeatTimeoutInMilliseconds 150 //so 0.15 seconds or 3 times the frequency(20Hz) of the framework sending messages to the Teensy 
                                             

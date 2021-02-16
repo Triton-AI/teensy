@@ -2,6 +2,7 @@ import serial
 import pygame as pg
 
 ser = serial.Serial("COM3",115200)
+
 pg.init()
 screen = pg.display.set_mode((875, 325))
 COLOR_INACTIVE = pg.Color('lightskyblue3')
@@ -70,7 +71,6 @@ def main():
     input_box3 = InputBox(splitVal+5,fsize+10, 865-splitVal, 325-fsize*2)
     input_boxes = [input_box1, input_box2, input_box3]
     done = False
-    textBuff = ''
     strs = ["" for x in range(16)]
     while not done:
         if(ser.in_waiting):
