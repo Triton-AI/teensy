@@ -60,8 +60,8 @@ void setup() {
 
 /// if(TEENSY_VERSION>= 4.0) // uncomment this section
   WDT_timings_t config;
-  config.trigger = 1; /* in seconds, 0->128 */
-  config.timeout = 1; /* in seconds, 0->128 */
+  config.trigger = watchdogTimeoutInMilliseconds/1000; /* in seconds, 0->128 */
+  config.timeout = watchdogTimeoutInMilliseconds/1000; /* in seconds, 0->128 */
   wdt.begin(config);
 ///}/////////////////////////
 
