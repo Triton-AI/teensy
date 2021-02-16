@@ -7,6 +7,7 @@
  * 
  * 
  */
+ 
 void recvWithEndMarker() {
    static byte ndx = 0;
    char endMarker = END_MARKER;
@@ -26,6 +27,7 @@ void recvWithEndMarker() {
      rc = Serial.read(); // rc stands for recieved char because Serial.read() only reads one char at a time
      //Serial.print("inside recv");
      if(rc == splitMarker){
+      
           receivedChars[ndx] = '\0'; // terminate the string
           ndx = 0;
           splitFound = 1;
@@ -84,11 +86,16 @@ void recvWithEndMarker() {
       if(strcmp(receivedChars, "calMaxRight") == 0)  g_fullRight = (int)val;
       if(strcmp(receivedChars, "calNeutralSteering") == 0)  g_steering = (int)val;
       //Commands from JTN
+<<<<<<< Updated upstream
       if(strcmp(receivedChars, "delay") == 0){  
       delay((int)val*1000); // dealys for val seconds; for example if "delay_2" is recieved over serial, the teensy will delay for 2 seconds
       Serial.println("delaying");
       }
       if(strcmp(receivedChars, "driveMode")==0) g_driveModeEnum = (int)val;
+=======
+      if(strcmp(receivedChars, "delay") == 0)  delay(val*1000); // dealys for val seconds; for example if "delay_2" is recieved over serial, the teensy will delay for 2 seconds
+      //if(strcmp(receivedChars, "driveMode")==0) calibration(&g_driveModeEnum, (int)val);
+>>>>>>> Stashed changes
    }
     newData = false;
  }

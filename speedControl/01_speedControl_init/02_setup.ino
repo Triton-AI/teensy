@@ -7,7 +7,6 @@ void setup() {
   delay(500);
   digitalWrite(13,LOW);
 
-
   Serial.begin(115200);
   pinMode(pinA, INPUT_PULLUP);   // configure the I.0 as a INPUTS
   pinMode(pinB, INPUT_PULLUP);
