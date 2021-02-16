@@ -86,16 +86,8 @@ void recvWithEndMarker() {
       if(strcmp(receivedChars, "calMaxRight") == 0)  g_fullRight = (int)val;
       if(strcmp(receivedChars, "calNeutralSteering") == 0)  g_steering = (int)val;
       //Commands from JTN
-<<<<<<< Updated upstream
-      if(strcmp(receivedChars, "delay") == 0){  
-      delay((int)val*1000); // dealys for val seconds; for example if "delay_2" is recieved over serial, the teensy will delay for 2 seconds
-      Serial.println("delaying");
-      }
-      if(strcmp(receivedChars, "driveMode")==0) g_driveModeEnum = (int)val;
-=======
       if(strcmp(receivedChars, "delay") == 0)  delay(val*1000); // dealys for val seconds; for example if "delay_2" is recieved over serial, the teensy will delay for 2 seconds
       //if(strcmp(receivedChars, "driveMode")==0) calibration(&g_driveModeEnum, (int)val);
->>>>>>> Stashed changes
    }
     newData = false;
  }
