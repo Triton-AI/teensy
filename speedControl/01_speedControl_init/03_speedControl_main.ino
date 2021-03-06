@@ -114,12 +114,12 @@ if(inRange ==0){
 //  Serial.print("Drivemode: ");
 //  Serial.println(g_driveModeEnum);
 //  Serial.print("===============\n");
-//  delay(5000);
+//delay(5000);
 int timeElapse = micros() - startTime;
 if(timeElapse> timeMax){
   timeMax = timeElapse;
   }
 Serial.print(timeMax);
 Serial.print("\t");
-  
+
 }

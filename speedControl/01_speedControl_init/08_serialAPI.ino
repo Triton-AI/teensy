@@ -104,7 +104,6 @@ void sendSpeed(){
 void sendThrottle(){
   Serial.print("throttle_");
   Serial.print(String(g_throttle) + "\n");
-//  Serial.print(String(g_rcThrottle) + "\n");
 }
 
 
